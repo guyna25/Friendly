@@ -14,11 +14,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Friendly - meet your friends',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Friendly - meet your friends'),
+        ),
+        body: Column(
+          children: [
+            Container(),
+            Container(),
+          ],
+        ),
+        bottomNavigationBar:
+            BottomNavigationBar(items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calendar_month),
+            label: 'Calender',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.people_alt_outlined),
+            label: 'Appointments',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ]),
       ),
-      home: StartPage(),
     );
   }
 }
