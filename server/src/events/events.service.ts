@@ -1,11 +1,10 @@
+import {Injectable} from '@nestjs/common';
 import { EventsRepositoyry } from "./events.repository";
 
+@Injectable()
 export class EventsService {
-    eventsRepo: EventsRepositoyry;
 
-    constructor() {
-        this.eventsRepo = new EventsRepositoyry();
-    }
+    constructor(public eventsRepo: EventsRepositoyry) {}
 
     findOne(id: string) {
         return this.eventsRepo.findOne(id);
@@ -17,5 +16,17 @@ export class EventsService {
 
     create(content: string) {
         return this.eventsRepo.create(content);
+    }
+
+    update(id: string, content: string) {
+        return this.eventsRepo.update(id, content);
+    }
+
+    remove(content: string) {
+        return this.eventsRepo.delete(content);
+    }
+
+    deleteAll(content: string) {
+        return this.eventsRepo.deleteAll(content);
     }
 }
