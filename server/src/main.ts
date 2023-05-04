@@ -1,9 +1,13 @@
+import * as path from 'path';
+require('dotenv').config({ path: path.join(__dirname, '..', '..', '.env')});
+import mongoose from 'mongoose';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { EventsModule } from './events/events.module';
-import path from 'path';
+
+const {get_full_access_url} = require('./services/db_password_loader');
 const {mongoConnect} = require('./services/db');
-require('dotenv').config({ path: path.join(__dirname, '..', '.env')});
+
 
 async function bootstrap() {
   await mongoConnect();
@@ -13,10 +17,10 @@ async function bootstrap() {
   );
   await app.listen(3000);
 }
-process.on( 'SIGINT', function() {
-  console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
-  // some other closing procedures go here
-  process.exit( );
-})
+// process.on('SIGINT', function() {
+//   console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+//   // some other closing procedures go here
+//   process.exit( );
+// })
 bootstrap();
 
