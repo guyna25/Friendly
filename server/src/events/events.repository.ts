@@ -1,12 +1,15 @@
 import {Injectable} from '@nestjs/common';
 import {readFile, writeFile} from 'fs/promises';
+import { EventType } from 'src/models/events.types';
+import { EventModel } from "../models/events.model";
 
 @Injectable()
 export class EventsRepositoyry {
-    async findOne(id: string) {
-        const contents = await readFile('events.json', 'utf8');
-        const events = JSON.parse(contents);
-        return events[id];
+
+    async findOne(event: EventType) {
+        return EventModel.find(
+            event
+        );
     }
 
     async findAll() {
@@ -15,14 +18,8 @@ export class EventsRepositoyry {
         return events;
     }
 
-    async create(content: string) {
-        const contents = await readFile('events.json', 'utf8');
-        const events = JSON.parse(contents);
-        const id = Math.floor(Math.random() * 999);
-        events[id] = {id, content};
-
-        await writeFile('events.json', JSON.stringify(events
-            ));
+    async create(content: EventType) {
+        EventModel.create(content);
     }
 
     async update(id: string, content: string) {

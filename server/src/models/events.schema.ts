@@ -1,6 +1,8 @@
-import mongoose from 'mongoose';
+import {Schema} from 'mongoose';
+import { findOneOrCreate } from "./events.statics";
 
-export const EventSchema = new mongoose.Schema({
+const EventSchema = new Schema({
+    eventId: {type:Number,  required: true},
     name: {type:String, required: true},
     eventTitlte: {type:String, required: true},
     friendName: {type: Array<String>, required: true},
@@ -8,3 +10,7 @@ export const EventSchema = new mongoose.Schema({
     date: {type:Date, required: true},
     notes: {type:String, required: false},
   });
+
+EventSchema.statics.findOneOrCreate = findOneOrCreate;
+
+export default EventSchema;

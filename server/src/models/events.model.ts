@@ -1,4 +1,4 @@
-import {model } from 'mongoose';
-import { EventSchema } from './events.mongo';
-
-export default model<Event>('Event', EventSchema);
+import { model } from "mongoose";
+import {EventDocument } from "./events.types";
+import EventSchema from "./events.schema";
+export const EventModel = model<EventDocument>("event", EventSchema);

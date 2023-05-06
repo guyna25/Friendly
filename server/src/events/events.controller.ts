@@ -8,13 +8,14 @@ export class EventsController {
     constructor(public eventsService: EventsService) {}
 
     @Post()
-    createEvent(@Body() body: any) {
+    createEvent(@Body() body: CreateEventDTO) {
         this.eventsService.create(body.content);
     }
 
     @Get('/:id')
     async getEvent(@Param('id') id: string) {
         const event = await this.eventsService.findOne(id);
+        console.log(event);
         if (!event) {
             throw new NotFoundException('Event not found');
         }
@@ -27,7 +28,7 @@ export class EventsController {
     }
 
     @Patch('/:id')
-    updateEvent(@Body() body: any, @Param('id') id: string) {
+    updateEvent(@Body() body: Record<string, any>, @Param('id') id: string) {
         this.eventsService.update(id, body.content);
     }
 
