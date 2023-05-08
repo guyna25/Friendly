@@ -1,5 +1,6 @@
 import {Injectable} from '@nestjs/common';
 import { EventsRepositoyry } from "./events.repository";
+import { EventType } from 'src/models/events.types';
 
 @Injectable()
 export class EventsService {
@@ -16,7 +17,7 @@ export class EventsService {
         return this.eventsRepo.findAll();
     }
 
-    create(content: string) {
+    create(content: EventType) {
         return this.eventsRepo.create(content);
     }
 

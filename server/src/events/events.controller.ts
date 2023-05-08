@@ -1,15 +1,18 @@
 import { Controller, Get, Post, Patch, Body, Param, NotFoundException, Delete} from '@nestjs/common';
 import {CreateEventDTO} from './dtos/create-event.dto';
 import { EventsService } from './events.service';
+import { EventType } from 'src/models/events.types';
 
 @Controller('events')
 export class EventsController {
-    
+
     constructor(public eventsService: EventsService) {}
 
     @Post()
     createEvent(@Body() body: CreateEventDTO) {
-        this.eventsService.create(body.content);
+        const jsonData: Record<string, any> = JSON.parse(body.content);
+        
+        this.eventsService.create(new EventType(jsonData));
     }
 
     @Get('/:id')

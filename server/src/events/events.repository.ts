@@ -6,9 +6,9 @@ import { EventModel } from "../models/events.model";
 @Injectable()
 export class EventsRepositoyry {
 
-    async findOne(event: EventType) {
+    async findOne(id: string) {
         return EventModel.find(
-            event
+            {id}
         );
     }
 

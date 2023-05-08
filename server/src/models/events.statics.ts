@@ -8,6 +8,16 @@ export async function findOneOrCreate(event: EventType): Promise<EventDocument> 
     }
 }
 
+export async function findOne(id: string): Promise<EventDocument> {
+  const record = await this.findOne(id);
+  if (record) {
+    return record;
+  } else {
+    return null;
+  }
+}
+
 export async function insertOne(event: EventType): Promise<void> {
   return this.create({ event });
 }
+
