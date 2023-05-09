@@ -1,8 +1,8 @@
 import {Schema} from 'mongoose';
+import { nanoid } from 'nanoid'
 import { findOneOrCreate } from "./events.statics";
 
 const EventSchema = new Schema({
-    eventId: {type:Number,  required: true},
     name: {type:String, required: true},
     eventTitlte: {type:String, required: true},
     friendName: {type: Array<String>, required: true},

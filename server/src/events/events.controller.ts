@@ -10,15 +10,13 @@ export class EventsController {
 
     @Post()
     createEvent(@Body() body: CreateEventDTO) {
-        const jsonData: Record<string, any> = JSON.parse(body.content);
-        
-        this.eventsService.create(new EventType(jsonData));
+        this.eventsService.create(new EventType(body.content));
     }
 
     @Get('/:id')
     async getEvent(@Param('id') id: string) {
         const event = await this.eventsService.findOne(id);
-        console.log(event);
+        // console.log(event);
         if (!event) {
             throw new NotFoundException('Event not found');
         }

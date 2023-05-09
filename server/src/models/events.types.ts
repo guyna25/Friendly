@@ -1,20 +1,39 @@
+import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Document, Model } from "mongoose";
 
 export class EventType {
+    
+    @IsString()
+    @IsNotEmpty()
     name: string;
+
+    @IsString()
+    @IsNotEmpty()
     eventTitlte: string;
-    friendName: Array<string>;
+
+    @IsArray()
+    @ArrayNotEmpty()
+    friendName: string[];
+
+    @IsString()
+    @IsNotEmpty()
     location: string;
+
+    @IsDate()
+    @IsNotEmpty()
     date: Date;
+
+    @IsString()
     notes: string;
 
-    constructor(values?: Record<string, string>) {
-        this.name = values.name;
-        this.eventTitlte = values.name;
-        this.friendName = values.name.split(", ");
-        this.location = values.name;
-        this.date = new Date(values.name);
-        this.notes = values.name;
+    constructor(values?: JSON) {
+        this.name = values['name'];
+        this.eventTitlte = values['eventTitlte'];
+        this.friendName = values['friendName'] ? values['friendName'].split(", ") : "";
+        this.location = values['location'];
+        this.date = values['date'] ? new Date(values['date']) : new Date();
+        this.notes = values['notes'];
+        // console.log(this);
     }
 }
 
