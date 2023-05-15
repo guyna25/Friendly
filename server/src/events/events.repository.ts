@@ -18,8 +18,13 @@ export class EventsRepositoyry {
         return events;
     }
 
-    async create(content: EventType) {
-        EventModel.create(content);
+    async create(content: EventType) {   
+        console.log(content);
+        EventModel.create(content).then((val) =>{
+            console.log(val);
+            console.log("done");}
+        );
+        
     }
 
     async update(id: string, content: string) {

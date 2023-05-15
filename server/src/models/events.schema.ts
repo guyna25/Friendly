@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid'
 import { findOneOrCreate } from "./events.statics";
 
 const EventSchema = new Schema({
-    name: {type:String, required: true},
     eventTitlte: {type:String, required: true},
     friendName: {type: Array<String>, required: true},
     location: {type:String, required: true},

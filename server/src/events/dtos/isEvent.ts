@@ -1,4 +1,4 @@
-import { registerDecorator, ValidationOptions, ValidationArguments, isString, isEmpty, isDate} from 'class-validator';
+import { registerDecorator, ValidationOptions, ValidationArguments, isString, isEmpty, isDateString} from 'class-validator';
 import { EventType } from 'src/models/events.types';
 
 export function IsValidEvent(validationOptions?: ValidationOptions) {
@@ -10,25 +10,26 @@ export function IsValidEvent(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          const stringsVals = ['name', 'eventTitlte', 'friendName', 'location']
+          let value_map = JSON.parse(value);
+          const stringsVals = ['eventTitle', 'friendName', 'location']
           stringsVals.forEach((valName) => {
-            if (!isString(value[valName]) || isEmpty(value[valName])) {
+            if (!isString(value_map[valName]) || isEmpty(value_map[valName])) {
               return false;
             };
           });
-          if (!isDate(value['date'])) {
+          if (!isDateString(value_map['date'])) {
               return false;
           }
-          if (isEmpty(value['notes'])){
+          if (isEmpty(value_map['notes'])){
             return true;
           }
           else {
-            return isString(value['notes']);
+            return isString(value_map['notes']);
           }
         },
         defaultMessage(args: ValidationArguments) {
           // Return an error message if the validation fails
-          return `${args.property} must be a valid EventType`;
+          return `${args.property} must be a valid Event`;
         },
       },
     });

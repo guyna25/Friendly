@@ -10,7 +10,8 @@ export class EventsController {
 
     @Post()
     createEvent(@Body() body: CreateEventDTO) {
-        this.eventsService.create(new EventType(body.content));
+        let event_data : Record<string, any> = JSON.parse(body.content as unknown as string);
+        this.eventsService.create(new EventType(event_data));
     }
 
     @Get('/:id')

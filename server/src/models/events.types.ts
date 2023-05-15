@@ -2,33 +2,14 @@ import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsOptional, IsString } from
 import { Document, Model } from "mongoose";
 
 export class EventType {
-    
-    @IsString()
-    @IsNotEmpty()
-    name: string;
-
-    @IsString()
-    @IsNotEmpty()
     eventTitlte: string;
-
-    @IsArray()
-    @ArrayNotEmpty()
     friendName: string[];
-
-    @IsString()
-    @IsNotEmpty()
     location: string;
-
-    @IsDate()
-    @IsNotEmpty()
     date: Date;
-
-    @IsString()
     notes: string;
 
-    constructor(values?: JSON) {
-        this.name = values['name'];
-        this.eventTitlte = values['eventTitlte'];
+    constructor(values?: Record<string, any>) {
+        this.eventTitlte = values['eventTitle'];
         this.friendName = values['friendName'] ? values['friendName'].split(", ") : "";
         this.location = values['location'];
         this.date = values['date'] ? new Date(values['date']) : new Date();
@@ -41,14 +22,12 @@ export interface EventDocument extends EventType, Document {};
 export interface EventModel extends Model<EventDocument> {
     findOneOrCreate: (
         {
-        name,
         eventTitlte,
         friendName,
         location,
         date,
         notes
         }: { 
-            name: string,
             eventTitlte: string,
             friendName: Array<string>,
             location: string,
@@ -59,14 +38,12 @@ export interface EventModel extends Model<EventDocument> {
 
       insertOne: (
         {
-        name,
         eventTitlte,
         friendName,
         location,
         date,
         notes
         }: { 
-            name: string,
             eventTitlte: string,
             friendName: Array<string>,
             location: string,
