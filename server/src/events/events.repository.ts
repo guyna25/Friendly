@@ -19,7 +19,6 @@ export class EventsRepositoyry {
     }
 
     async create(content: EventType) {   
-        console.log(content);
         EventModel.create(content).then((val) =>{
             console.log(val);
             console.log("done");}
@@ -27,22 +26,12 @@ export class EventsRepositoyry {
         
     }
 
-    async update(id: string, content: string) {
-        const contents = await readFile('events.json', 'utf8');
-        const events = JSON.parse(contents);
-        events[id] = {id, content};
-
-        await writeFile('events.json', JSON.stringify(events
-            ));
+    async update(content: EventType) {
+        EventModel.updateOne(content);
     }
 
-    async delete(id: string) {
-        const contents = await readFile('events.json', 'utf8');
-        const events = JSON.parse(contents);
-        delete events[id];
-
-        await writeFile('events.json', JSON.stringify(events
-            ));
+    async delete(content: EventType) {
+        EventModel.updateOne(content);
     }
 
     async deleteAll(id: string) {

@@ -21,11 +21,11 @@ export class EventsService {
         return this.eventsRepo.create(content);
     }
 
-    update(id: string, content: string) {
-        return this.eventsRepo.update(id, content);
+    update(content: EventType) {
+        return this.eventsRepo.update(content);
     }
 
-    remove(content: string) {
+    remove(content: EventType) {
         return this.eventsRepo.delete(content);
     }
 

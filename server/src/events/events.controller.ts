@@ -29,13 +29,15 @@ export class EventsController {
         return this.eventsService.findAll();
     }
 
-    @Patch('/:id')
-    updateEvent(@Body() body: Record<string, any>, @Param('id') id: string) {
-        this.eventsService.update(id, body.content);
+    @Patch()
+    update(@Body() body: CreateEventDTO) {
+        let event_data : Record<string, any> = JSON.parse(body.content as unknown as string);
+        this.eventsService.update(new EventType(event_data));
     }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-      return this.eventsService.remove(id);
+    @Delete()
+    remove(@Body() body: CreateEventDTO) {
+      let event_data : Record<string, any> = JSON.parse(body.content as unknown as string);
+      return this.eventsService.remove(new EventType(event_data));
     }
 }
