@@ -1,0 +1,23 @@
+{
+    "1":
+    {"eventTitle": "Party",
+	"friendName": "Mariah Carey",
+	"location": "Times square",
+	"date": "01/01/2025",
+	"notes": "Not actually invited"
+    },
+    "2":
+    {"eventTitle": "Drinks",
+	"friendName": "Pink",
+	"location": "Beerman",
+	"date": "27/09/2025"
+    },
+    "3":
+    {"eventTitle": "Board games",
+	"friendName": "Willy wonka",
+	"location": "Neary the chocolate factory",
+	"date": "01/01/2000",
+	"notes": "A lot less messy"
+    }
+
+}

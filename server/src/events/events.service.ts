@@ -1,12 +1,12 @@
 import {Injectable} from '@nestjs/common';
 import { EventsRepositoyry } from "./events.repository";
-import { EventType } from 'src/models/events.types';
+import { EventInput, EventType } from 'src/models/events.types';
 
 @Injectable()
 export class EventsService {
 
     constructor(public eventsRepo: EventsRepositoyry) {
-        console.log('Constructor arguments:', this);
+        // console.log('Constructor arguments:', this);
     }
 
     findOne(id: string) {
@@ -17,7 +17,7 @@ export class EventsService {
         return this.eventsRepo.findAll();
     }
 
-    create(content: EventType) {
+    create(content: EventInput) {
         return this.eventsRepo.create(content);
     }
 
@@ -25,8 +25,8 @@ export class EventsService {
         return this.eventsRepo.update(content);
     }
 
-    remove(content: EventType) {
-        return this.eventsRepo.delete(content);
+    remove(id: string) {
+        return this.eventsRepo.delete(id);
     }
 
     deleteAll(content: string) {

@@ -1,34 +1,49 @@
 import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 import { Document, Model } from "mongoose";
 
+export interface EventInput {
+    eventTitle: string;
+    friendNames: string[];
+    location: string;
+    date?: Date;
+    notes?: string;
+}
+
 export class EventType {
-    eventTitlte: string;
-    friendName: string[];
+    _id: string;
+    eventTitle: string;
+    friendNames: string[];
     location: string;
     date: Date;
-    notes: string;
+    notes?: string;
 
-    constructor(values?: Record<string, any>) {
-        this.eventTitlte = values['eventTitle'];
-        this.friendName = values['friendName'] ? values['friendName'].split(", ") : "";
-        this.location = values['location'];
-        this.date = values['date'] ? new Date(values['date']) : new Date();
-        this.notes = values['notes'];
-        // console.log(this);
+    constructor(values: EventInput) {
+        const {eventTitle, friendNames, location, date, notes} = values;
+        this.eventTitle = eventTitle;
+        this.friendNames =friendNames;
+        this.location = location;
+        this.date = date ?? new Date();
+        this.notes = notes;
     }
 }
 
-export interface EventDocument extends EventType, Document {};
+export interface EventDocument extends Document<EventType> {
+    eventTitle: string,
+    friendNames: Array<string>,
+    location: string,
+    date: Date,
+    notes: string,
+};
 export interface EventModel extends Model<EventDocument> {
     findOneOrCreate: (
         {
-        eventTitlte,
+        eventTitle,
         friendName,
         location,
         date,
         notes
         }: { 
-            eventTitlte: string,
+            eventTitle: string,
             friendName: Array<string>,
             location: string,
             date: Date,
@@ -38,13 +53,13 @@ export interface EventModel extends Model<EventDocument> {
 
       insertOne: (
         {
-        eventTitlte,
+        eventTitle,
         friendName,
         location,
         date,
         notes
         }: { 
-            eventTitlte: string,
+            eventTitle: string,
             friendName: Array<string>,
             location: string,
             date: Date,

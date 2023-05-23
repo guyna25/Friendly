@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-import 'pages/basics_example.dart';
+import 'screens/basics_example.dart';
 
 void main() {
   initializeDateFormatting().then((_) => runApp(MyApp()));

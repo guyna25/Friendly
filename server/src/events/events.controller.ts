@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Patch, Body, Param, NotFoundException, Delete} from '@nestjs/common';
 import {CreateEventDTO} from './dtos/create-event.dto';
 import { EventsService } from './events.service';
-import { EventType } from 'src/models/events.types';
+import { EventInput, EventType } from 'src/models/events.types';
 
 @Controller('events')
 export class EventsController {
@@ -10,8 +10,8 @@ export class EventsController {
 
     @Post()
     createEvent(@Body() body: CreateEventDTO) {
-        let event_data : Record<string, any> = JSON.parse(body.content as unknown as string);
-        this.eventsService.create(new EventType(event_data));
+        const event_data : EventInput = JSON.parse(body.content as unknown as string) as EventInput;
+        this.eventsService.create(event_data);
     }
 
     @Get('/:id')
@@ -31,13 +31,12 @@ export class EventsController {
 
     @Patch()
     update(@Body() body: CreateEventDTO) {
-        let event_data : Record<string, any> = JSON.parse(body.content as unknown as string);
-        this.eventsService.update(new EventType(event_data));
+        let event_data : EventType = body.content as unknown as EventType;
+        this.eventsService.update(event_data);
     }
 
     @Delete()
-    remove(@Body() body: CreateEventDTO) {
-      let event_data : Record<string, any> = JSON.parse(body.content as unknown as string);
-      return this.eventsService.remove(new EventType(event_data));
+    remove(id: string) {
+      return this.eventsService.remove(id);
     }
 }

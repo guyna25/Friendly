@@ -1,6 +1,6 @@
 import mongoose = require('mongoose'); 
 export interface Event extends mongoose.Document {
-    eventTitlte: string,
+    eventTitle: string,
     friendName: string[],
     location: string,
     date: Date,

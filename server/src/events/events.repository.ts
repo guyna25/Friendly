@@ -1,40 +1,40 @@
-import {Injectable} from '@nestjs/common';
-import {readFile, writeFile} from 'fs/promises';
-import { EventType } from 'src/models/events.types';
+import { Injectable } from '@nestjs/common';
+import { readFile, writeFile } from 'fs/promises';
+import { EventType, EventInput } from 'src/models/events.types';
 import { EventModel } from "../models/events.model";
 
 @Injectable()
 export class EventsRepositoyry {
 
     async findOne(id: string) {
-        return EventModel.find(
-            {id}
-        );
+        return EventModel.find({ _id: id });
     }
 
     async findAll() {
-        const contents = await readFile('events.json', 'utf8');
-        const events = JSON.parse(contents);
-        return events;
+        return EventModel.find({});
     }
 
-    async create(content: EventType) {   
-        EventModel.create(content).then((val) =>{
-            console.log(val);
-            console.log("done");}
-        );
-        
+    async create(content: EventInput) {
+        const createResponse = await EventModel.create(content);
+        const { eventTitle, friendNames,
+            location,
+            date,
+            notes,
+            _id } = createResponse;
+        console.log(createResponse);
+        //TODO create new object from createResponse
+        return { eventTitle: eventTitle, friendName: friendNames, location: location, date: date, notes: notes, id: _id };
     }
 
-    async update(content: EventType) {
+    async update(content: EventInput) {
         EventModel.updateOne(content);
     }
 
-    async delete(content: EventType) {
-        EventModel.updateOne(content);
+    async delete(id: string) {
+        EventModel.deleteOne({ _id: id });
     }
 
     async deleteAll(id: string) {
-        await writeFile('events.json', JSON.stringify({}));
+        EventModel.deleteMany({});
     }
 }
