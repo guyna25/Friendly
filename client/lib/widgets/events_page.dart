@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class EventTile extends StatefulWidget {
   final String eventName;
@@ -7,7 +8,8 @@ class EventTile extends StatefulWidget {
   final DateTime date;
   final String? notes;
 
-  EventTile({
+  const EventTile({
+    super.key,
     required this.eventName,
     required this.friendNames,
     required this.location,
@@ -20,24 +22,26 @@ class EventTile extends StatefulWidget {
 }
 
 class _EventTileState extends State<EventTile> {
-  int _counter = 0;
-
   @override
   void initState() {
     super.initState();
-    _counter = widget.count;
-  }
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = DateFormat('dd-MM kk:mm').format(widget.date);
     return ExpansionTile(
       title: Text(widget.eventName),
+      subtitle: Text(widget.friendNames.toString()),
+      leading: Text(widget.location),
+      trailing: Text(formattedDate),
+      children: widget.notes != null
+          ? [
+              ListTile(
+                title: Text(widget.notes!),
+              )
+            ]
+          : [],
     );
   }
 }
