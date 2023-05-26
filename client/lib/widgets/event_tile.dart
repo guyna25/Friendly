@@ -1,8 +1,9 @@
+import 'package:client/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EventTile extends StatefulWidget {
-  final String eventName;
+  final String eventTitle;
   final List<String> friendNames;
   final String location;
   final DateTime date;
@@ -10,7 +11,7 @@ class EventTile extends StatefulWidget {
 
   const EventTile({
     super.key,
-    required this.eventName,
+    required this.eventTitle,
     required this.friendNames,
     required this.location,
     required this.date,
@@ -31,17 +32,15 @@ class _EventTileState extends State<EventTile> {
   Widget build(BuildContext context) {
     String formattedDate = DateFormat('dd-MM kk:mm').format(widget.date);
     return ExpansionTile(
-      title: Text(widget.eventName),
+      title: Text(widget.eventTitle),
       subtitle: Text(widget.friendNames.toString()),
       leading: Text(widget.location),
       trailing: Text(formattedDate),
-      children: widget.notes != null
-          ? [
-              ListTile(
-                title: Text(widget.notes!),
-              )
-            ]
-          : [],
+      children: widget.notes == null
+          ? []
+          : <Widget>[
+              ListTile(title: Text(widget.notes!)),
+            ],
     );
   }
 }

@@ -2,8 +2,41 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import 'dart:collection';
-
+import 'dart:convert';
+import 'package:flutter/services.dart';
 import 'package:table_calendar/table_calendar.dart';
+
+Map<String, Map<String, dynamic>> parseJson({String jsonString = ""}) {
+  dynamic json = jsonDecode(jsonString);
+
+  if (json is Map<String, dynamic>) {
+    Map<String, Map<String, dynamic>> resultMap = {};
+
+    json.forEach((key, value) {
+      if (value is Map<String, dynamic>) {
+        resultMap[key] = value;
+      }
+    });
+
+    return resultMap;
+  }
+
+  return {}; // or handle the case when the JSON doesn't match the expected structure
+}
+
+void enclosedPrint({dynamic toPrint, int wrapLength = 10}) {
+  print("=" * wrapLength);
+  print(toPrint);
+  print("=" * wrapLength);
+}
+
+Future<Map> readFile(filepath) async {
+  // File stam = File('client\\lib\\event_stubs.json');
+  String s = await rootBundle.loadString(filepath);
+  Map sDecoded = jsonDecode(s)!;
+  enclosedPrint(toPrint: sDecoded);
+  return sDecoded;
+}
 
 /// Example event class.
 class Event {
