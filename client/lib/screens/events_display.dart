@@ -40,7 +40,6 @@ class _EventsDisplayScreenState extends State<EventsDisplayScreen> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else {
             widget.eventList = snapshot.data!;
-            // enclosedPrint(toPrint: snapshot.data!);
             return ListView.builder(
               itemCount: widget.eventList.length,
               itemBuilder: (BuildContext context, int i) {
