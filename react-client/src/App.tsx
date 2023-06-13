@@ -11,13 +11,13 @@ function App() {
     {"eventTitle": "Party",
     "friendNames": ["Mariah Carey"],
     "location": "Times square",
-    "date": new Date("2025-01-01T00:23:00.000+00:00"),
+    "date": new Date("2025-01-01T23:00:00.000+00:00"),
     "notes": "Not actually invited"
       },
       {"eventTitle": "Drinks",
     "friendNames": ["Pink", "Katy perry", "Gaga"],
     "location": "Beerman",
-    "date": new Date("2025-09-27T00:20:00.000+00:00"),
+    "date": new Date("2025-09-27T20:05:00.000+00:00"),
     "notes": undefined
       },
       {"eventTitle": "Board games",

@@ -1,14 +1,16 @@
 import React from 'react';
 import EventType from './EventType';
+import {get_full_day_hour} from '../../utils/Utils';
 
 const EventItem: React.FC<EventType> = (props) => {
-    return (<div>
+    return (<>
         <div>Name: {props.eventTitle}</div>
-        <div>FriendsList: {props.friendNames}</div>
-        <div>Date: {props.date.toISOString()}</div>
+        <div>Friends: {props.friendNames.join(", ")}</div>
+        <div>Date: {`${get_full_day_hour(props.date)} ${props.date.toLocaleDateString()}`}</div>
         <div>Location: {props.location}</div>
-        <div>Notes: {props.notes}</div>
-    </div>);
+        {props.notes !== "" && <div>Notes: {props.notes}</div>}
+    </>
+    );
 }
 
 export default EventItem;
