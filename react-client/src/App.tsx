@@ -35,13 +35,13 @@ function App() {
 
   return (
     <div>
-    <h1>Friendly - meet your friends</h1>
-      <div>
-      <Events events={event_stubs} title={"Event list"}/>
+    <h1 style={{'padding': '20px'}}>Friendly - meet your friends</h1>
+      <div style={{'float': 'left'}}>
+        <Events events={event_stubs} title={"Event list"}/>
       </div>
-      <div>
+      <div style={{'float': 'left'}}>
       <NewEvent onAddEvent={addEventHandler}/>
-      </div> 
+      </div>
     </div>
   );
 }
