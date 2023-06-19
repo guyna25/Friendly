@@ -1,12 +1,13 @@
-import React, { useRef} from "react";
+import React, { useRef, useState} from "react";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const EventForm : React.FC<any> = (props) => {
     const eventTitleInputRef = useRef<HTMLInputElement>(null);
     const friendsInputRef = useRef<HTMLInputElement>(null);
     const locationInputRef = useRef<HTMLInputElement>(null);
-    const dateInputRef = useRef<HTMLInputElement>(null);
+    const [dateInput, setDateInput] = useState<Date | null>(null);
     const notesInputRef = useRef<HTMLInputElement>(null);
-    // const formRef = useRef(null);
 
     const resetForm = () => {
         if (eventTitleInputRef.current !== null) {
@@ -18,8 +19,8 @@ const EventForm : React.FC<any> = (props) => {
         if (locationInputRef.current !== null) {
             locationInputRef.current.value = '';
         }
-        if (dateInputRef.current !== null) {
-            dateInputRef.current.value = '';
+        if (dateInput !== null) {
+            setDateInput(null);
         }
         if (notesInputRef.current !== null) {
             notesInputRef.current.value = '';
@@ -30,14 +31,13 @@ const EventForm : React.FC<any> = (props) => {
         event.preventDefault();
         const eventData = {
             name: eventTitleInputRef.current?.value,
-            friends: friendsInputRef.current?.value,
+            friends: friendsInputRef.current?.value.split(" "),
             location: locationInputRef.current?.value,
-            date: dateInputRef.current?.value,
+            date: dateInput,
             notes: notesInputRef.current?.value,
         };
-        console.log(eventData);
         props.onSaveEvent(eventData);
-        // resetForm();
+        resetForm();
     };
 
 
@@ -47,26 +47,33 @@ const EventForm : React.FC<any> = (props) => {
                 <label>Name</label>
                 <input type="text" ref={eventTitleInputRef} />
             </div>
-            <div className="new-event__control" ref={friendsInputRef}>
+            <div className="new-event__control">
                 <label>Friends</label>
-                <input type="text"/>
+                <input type="text" ref={friendsInputRef}/>
             </div>
-            <div className="new-event__control" ref={locationInputRef}>
+            <div className="new-event__control" >
                 <label>Location</label>
-                <input type="text"/>
+                <input type="text" ref={locationInputRef}/>
             </div>
-            <div className="new-event__control" ref={dateInputRef}>
+            <div className="new-event__control">
                 <label>Date</label>
-                <input type="date" min="2019-01-01" max="2100-01-01"/>
+                <DatePicker
+            selected={dateInput}
+            onChange={(date) => setDateInput(date)}
+            dateFormat="MMMM d, yyyy h:mm aa"
+            showTimeSelect={true}
+            timeIntervals={15}
+            minDate={new Date("2019-01-01")}
+            maxDate={new Date("2100-01-01")}
+          />
             </div>
-            <div className="new-event__control" ref={notesInputRef}>
+            <div className="new-event__control" >
                 <label>Notes</label>
-                <input type="text"/>
+                <input type="text" ref={notesInputRef}/>
             </div>
             
             <div className="new-expense__actions">
                 <button type="submit">Add Event</button>
-                
             </div>
         </div>
     </form>

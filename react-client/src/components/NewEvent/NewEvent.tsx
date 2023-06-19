@@ -1,6 +1,5 @@
 import React from "react";
 import EventForm from "./EventForm";
-import { EventType } from "@testing-library/react";
 
 const NewEvent : React.FC<any>= (props) => {
 

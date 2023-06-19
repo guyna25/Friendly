@@ -17,7 +17,7 @@ const Events : React.FC<{title: string, events:EventType[]}>= (props) => {
     return <><EventListTitle> {props.title} </EventListTitle><StyledEventList>
     {props.events.map(e => 
       <EventItem 
-        eventTitle={e.eventTitle} friendNames={e.friendNames}
+        eventTitle={e.eventTitle} friends={e.friends}
         location={e.location}
         date={e.date}
         notes={e.notes ?? ''}/>
