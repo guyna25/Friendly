@@ -11,7 +11,7 @@ export function IsValidEvent(validationOptions?: ValidationOptions) {
       validator: {
         validate(value: any, args: ValidationArguments) {
           let value_map = JSON.parse(value);
-          const stringsVals = ['eventTitle', 'friendName', 'location']
+          const stringsVals = ['eventTitle', 'friends', 'location']
           stringsVals.forEach((valName) => {
             if (!isString(value_map[valName]) || isEmpty(value_map[valName])) {
               return false;

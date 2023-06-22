@@ -2,12 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { readFile, writeFile } from 'fs/promises';
 import { EventType, EventInput } from 'src/models/events.types';
 import { EventModel } from "../models/events.model";
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class EventsRepositoyry {
 
     async findOne(id: string) {
-        return EventModel.find({ _id: id });
+        return EventModel.findOne({_id: new ObjectId(id)});
     }
 
     async findAll() {
@@ -16,18 +17,24 @@ export class EventsRepositoyry {
 
     async create(content: EventInput) {
         const createResponse = await EventModel.create(content);
-        const { eventTitle, friendNames,
+        const { eventTitle, friends: friends,
             location,
             date,
             notes,
             _id } = createResponse;
-        console.log(createResponse);
         //TODO create new object from createResponse
-        return { eventTitle: eventTitle, friendName: friendNames, location: location, date: date, notes: notes, id: _id };
+        return { eventTitle: eventTitle, friends: friends, location: location, date: date, notes: notes, id: _id };
     }
 
-    async update(content: EventInput) {
-        EventModel.updateOne(content);
+    async update(content: Partial<EventType>) {
+        const stams = await this.findOne(content._id);
+        console.log("before:", stams);
+        const res = await EventModel.findByIdAndUpdate(
+            {_id: new ObjectId(content._id)},
+            content
+        );
+        const stam = await this.findOne(content._id);
+        console.log("after:", stam);
     }
 
     async delete(id: string) {

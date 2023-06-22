@@ -21,7 +21,7 @@ export class EventsService {
         return this.eventsRepo.create(content);
     }
 
-    update(content: EventType) {
+    update(content: Partial<EventType>) {
         return this.eventsRepo.update(content);
     }
 

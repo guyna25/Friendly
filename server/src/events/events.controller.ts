@@ -2,6 +2,7 @@ import { Controller, Get, Post, Patch, Body, Param, NotFoundException, Delete} f
 import {CreateEventDTO} from './dtos/create-event.dto';
 import { EventsService } from './events.service';
 import { EventInput, EventType } from 'src/models/events.types';
+import { PatchEventDTO } from './dtos/patch-event.dto';
 
 @Controller('events')
 export class EventsController {
@@ -9,9 +10,10 @@ export class EventsController {
     constructor(public eventsService: EventsService) {}
 
     @Post()
-    createEvent(@Body() body: CreateEventDTO) {
+    async createEvent(@Body() body: CreateEventDTO) {
         const event_data : EventInput = JSON.parse(body.content as unknown as string) as EventInput;
-        this.eventsService.create(event_data);
+        const new_event = await this.eventsService.create(event_data);
+        return new_event.id;
     }
 
     @Get('/:id')
@@ -30,8 +32,8 @@ export class EventsController {
     }
 
     @Patch()
-    update(@Body() body: CreateEventDTO) {
-        let event_data : EventType = body.content as unknown as EventType;
+    update(@Body() body: PatchEventDTO) {
+        let event_data : Partial<EventType> = JSON.parse(body.content) as Partial<EventType>;
         this.eventsService.update(event_data);
     }
 

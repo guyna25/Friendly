@@ -3,7 +3,7 @@ import { Document, Model } from "mongoose";
 
 export interface EventInput {
     eventTitle: string;
-    friendNames: string[];
+    friends: string[];
     location: string;
     date?: Date;
     notes?: string;
@@ -12,15 +12,15 @@ export interface EventInput {
 export class EventType {
     _id: string;
     eventTitle: string;
-    friendNames: string[];
+    friends: string[];
     location: string;
     date: Date;
     notes?: string;
 
     constructor(values: EventInput) {
-        const {eventTitle, friendNames, location, date, notes} = values;
+        const {eventTitle, friends: friends, location, date, notes} = values;
         this.eventTitle = eventTitle;
-        this.friendNames =friendNames;
+        this.friends =friends;
         this.location = location;
         this.date = date ?? new Date();
         this.notes = notes;
@@ -29,7 +29,7 @@ export class EventType {
 
 export interface EventDocument extends Document<EventType> {
     eventTitle: string,
-    friendNames: Array<string>,
+    friends: Array<string>,
     location: string,
     date: Date,
     notes: string,
@@ -38,13 +38,13 @@ export interface EventModel extends Model<EventDocument> {
     findOneOrCreate: (
         {
         eventTitle,
-        friendName,
+        friends,
         location,
         date,
         notes
         }: { 
             eventTitle: string,
-            friendName: Array<string>,
+            friends: Array<string>,
             location: string,
             date: Date,
             notes: string,
@@ -54,13 +54,13 @@ export interface EventModel extends Model<EventDocument> {
       insertOne: (
         {
         eventTitle,
-        friendName,
+        friends,
         location,
         date,
         notes
         }: { 
             eventTitle: string,
-            friendName: Array<string>,
+            friends: Array<string>,
             location: string,
             date: Date,
             notes: string,

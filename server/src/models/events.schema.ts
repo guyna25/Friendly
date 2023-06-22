@@ -4,7 +4,7 @@ import { findOneOrCreate } from "./events.statics";
 
 const EventSchema = new Schema({
     eventTitle: {type:String, required: true},
-    friendName: {type: Array<String>, required: true},
+    friends: {type: Array<String>, required: true},
     location: {type:String, required: true},
     date: {type:Date, required: true},
     notes: {type:String, required: false},
