@@ -12,6 +12,7 @@ import {mongoConnect} from './services/db';
 async function bootstrap() {
   await mongoConnect();
   const app = await NestFactory.create(EventsModule);
+  app.enableCors();
   app.useGlobalPipes(
     new ValidationPipe()
   );
