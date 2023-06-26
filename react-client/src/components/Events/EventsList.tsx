@@ -13,7 +13,7 @@ padding-left: 180px;
 // text-align: center;
 `;
 
-const Events : React.FC<{updateEvent: Function, title: string, events:EventType[]}>= (props) => {
+const Events : React.FC<{title: string, events:EventType[]}>= (props) => {
     return <><EventListTitle> {props.title} </EventListTitle>
     <StyledEventList>
     {props.events.map(e => 
@@ -23,7 +23,6 @@ const Events : React.FC<{updateEvent: Function, title: string, events:EventType[
         location={e.location}
         date={e.date}
         notes={e.notes ?? ''}
-        updateEvent={props.updateEvent}
         />
       )}
       </StyledEventList>

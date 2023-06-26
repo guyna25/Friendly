@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { get_full_day_hour } from '../../utils/Utils';
 import Button from '@mui/material/Button';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
+import EventContext from '../../api/EventsContext';
 
 const StyledEventItem = styled.li`
   border-color: #050D1F;
@@ -22,14 +23,14 @@ const EventItem: React.FC<{
   location: string,
   notes: string | undefined,
   date: Date,
-  updateEvent: Function
 }> = (props) => {
   const [inEdit, setInEdit] = useState(false);
+  const eventContext = useContext(EventContext);
 
   const saveHandler = () => {
     if ((titleVal !== props.eventTitle) || (friendsVal !== props.friends.join(", ")) || (locationVal !== props.location) || (dateVal !== props.date) || (notesVal !== props.notes)) {
       //only add id and changed fields
-      props.updateEvent({
+      eventContext.apiService.updateEvent({
         _id: props._id,
         ...(titleVal !== props.eventTitle && {eventTitle: titleVal}),
         ...(friendsVal !== props.friends.join(", ") && { friends: friendsVal.split(",")}),

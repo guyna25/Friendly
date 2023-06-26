@@ -2,49 +2,25 @@ import NewEvent from './components/NewEvent/NewEvent';
 import Events from './components/Events/EventsList';
 
 import './App.css';
-import axios from 'axios';
-import React, { useState, useCallback, useEffect } from 'react';
+import EventApi from './api/EventApi';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import EventType from './components/Events/EventType';
+import EventContext from './api/EventsContext';
+
 
 function App() {
 
-  const eventEndpoint = 'http://localhost:3000/events';
+  const eventApi = useRef(new EventApi());
   const [events, setEvents] = useState<EventType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const updateEventItem = (updatedData: Partial<EventType>) => {
-    axios.patch(eventEndpoint, {'content': JSON.stringify(updatedData)})
-      .then(response => {
-        // Handle the response from the server if needed
-        console.log('Update successful:', response.data);
-      })
-      .catch(error => {
-        // Handle errors if the update request fails
-        console.error('Update failed:', error);
-      });
-  }
-
   const fetchEventsHandler = useCallback(async () => {
     setError(null);
     try {
-      const response = await fetch('http://localhost:3000/events');
-      console.log(response.body);
-      if (!response.ok) {
-        throw new Error('Something went wrong!');
-      }
-      const data = await response.json();
+      const data = await eventApi.current.getEvents();
 
-      setEvents(data.map((e: any) => {
-        return {
-          _id: e._id,
-          eventTitle: e.eventTitle,
-          friends: e.friends,
-          location: e.location,
-          notes: e.notes,
-          date: new Date(e.date)
-        }
-      }));
+      setEvents(data);
     } catch (error: any) {
       setError(error.message);
     }
@@ -66,7 +42,7 @@ function App() {
 
 
   if (events.length > 0) {
-    content = <Events events={events} updateEvent={updateEventItem} title={"Event list"} />;
+    content = <Events events={events} title={"Event list"} />;
   }
 
   if (error) {
@@ -81,7 +57,9 @@ function App() {
     <div>
       <h1 style={{ 'padding': '20px' }}>Friendly - meet your friends</h1>
       <div style={{ 'float': 'left' }}>
+        <EventContext.Provider key={"context"} value={{apiService: eventApi.current}}>
         {content}
+        </EventContext.Provider>
       </div>
       <div style={{ 'float': 'left' }}>
         <NewEvent onAddEvent={addEventHandler} />

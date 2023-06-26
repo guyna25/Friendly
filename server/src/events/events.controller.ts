@@ -33,6 +33,7 @@ export class EventsController {
 
     @Patch()
     update(@Body() body: PatchEventDTO) {
+        console.log('update here');
         let event_data : Partial<EventType> = JSON.parse(body.content) as Partial<EventType>;
         this.eventsService.update(event_data);
     }
