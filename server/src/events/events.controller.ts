@@ -11,7 +11,16 @@ export class EventsController {
 
     @Post()
     async createEvent(@Body() body: CreateEventDTO) {
-        const event_data : EventInput = JSON.parse(body.content as unknown as string) as EventInput;
+        console.log('create event');
+        console.log(typeof body.content);
+        const newEvent = JSON.parse(body.content);
+        const event_data : EventInput = {
+            eventTitle: newEvent.eventTitle,
+            friends: newEvent.friends,
+            location: newEvent.location,
+            date: newEvent.date,
+            notes: newEvent.notes,
+        };
         const new_event = await this.eventsService.create(event_data);
         return new_event.id;
     }

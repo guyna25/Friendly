@@ -10,9 +10,7 @@ export function IsValidEventUpdate(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          // console.log('validate update', value, args);
           const possible_fields = ["eventTitle", "friends", "location", "date", "notes"];
-          console.log(args, value);
           let value_map = JSON.parse(value);
           //must have _id
           if (!isString(value_map['_id']) || isEmpty(value_map['_id'])) {

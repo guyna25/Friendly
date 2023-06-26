@@ -4,7 +4,7 @@ import Events from './components/Events/EventsList';
 import './App.css';
 import EventApi from './api/EventApi';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import EventType from './components/Events/EventType';
+import {EventType, PartialEventType} from './components/Events/EventType';
 import EventContext from './api/EventsContext';
 
 
@@ -31,11 +31,21 @@ function App() {
     fetchEventsHandler();
   }, [fetchEventsHandler]);
 
-  const addEventHandler = (data: Map<string, any>) => {
+  const addEventHandler = (data: PartialEventType) => {
     // console.log('Phew...Here;s your data');
     // console.log(data);
-    setEvents([...events, data as unknown as EventType]
-    );
+    eventApi.current.createEvent(data).then((newId) => {
+      const newEvent : EventType =  {
+        _id: newId,
+        "eventTitle": data.eventTitle,
+        "friends": data.friends,
+        "location": data.location,
+        "notes": data.notes,
+        "date": data.date
+      }
+      console.log('create succesful:', newEvent);
+      setEvents([...events, newEvent]);
+    });
   }
 
   let content = <p>Loading...</p>;

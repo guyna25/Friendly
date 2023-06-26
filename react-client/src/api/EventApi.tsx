@@ -1,5 +1,5 @@
 import axios from 'axios';
-import EventType from '../components/Events/EventType';
+import {EventType, PartialEventType} from '../components/Events/EventType';
 
 export default class EventApi {
     endpoint: string = 'http://localhost:3000/events';
@@ -33,7 +33,6 @@ export default class EventApi {
 
 
     async updateEvent(updatedData: Partial<EventType>) {
-        console.log(this.endpoint, updatedData);
         axios.patch(this.endpoint, {'content': JSON.stringify(updatedData)})
             .then(response => {
             // Handle the response from the server if needed
@@ -45,16 +44,10 @@ export default class EventApi {
             });
     }
 
-    createEvent(newEvent: EventType) {
-        axios.patch(this.endpoint, {'content': JSON.stringify(newEvent)})
-              .then(response => {
-                // Handle the response from the server if needed
-                console.log('Create successful:', response.data);
-              })
-              .catch(error => {
-                // Handle errors if the update request fails
-                console.error('Create failed:', error);
-              });
+    async createEvent(newEvent: PartialEventType) {
+        const response = await axios.post(this.endpoint, {'content': JSON.stringify(newEvent)})
+        console.log('Create response:', response.data);
+        return response.data;
     }
 
     destroyEvent() {

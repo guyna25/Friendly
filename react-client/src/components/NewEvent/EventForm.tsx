@@ -1,8 +1,9 @@
-import React, { useRef, useState} from "react";
+import React, { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { PartialEventType } from '../Events/EventType';
 
-const EventForm : React.FC<any> = (props) => {
+const EventForm: React.FC<{ onSaveEvent: Function }> = (props) => {
     const eventTitleInputRef = useRef<HTMLInputElement>(null);
     const friendsInputRef = useRef<HTMLInputElement>(null);
     const locationInputRef = useRef<HTMLInputElement>(null);
@@ -25,58 +26,60 @@ const EventForm : React.FC<any> = (props) => {
         if (notesInputRef.current !== null) {
             notesInputRef.current.value = '';
         }
-    }
+    };
 
     const submitHandler = (event: React.FormEvent) => {
         event.preventDefault();
-        const eventData = {
-            name: eventTitleInputRef.current?.value,
-            friends: friendsInputRef.current?.value.split(" "),
-            location: locationInputRef.current?.value,
-            date: dateInput,
-            notes: notesInputRef.current?.value,
+
+        const eventData : PartialEventType= {
+            eventTitle: eventTitleInputRef.current!.value,
+            friends: friendsInputRef.current!.value.split(' '),
+            location: locationInputRef.current!.value,
+            date: dateInput!,
+            notes: notesInputRef.current?.value
         };
         props.onSaveEvent(eventData);
         resetForm();
     };
 
+    return (
+        <form onSubmit={submitHandler}>
+            <div className="new-event__controls">
+                <div className="new-event__control">
+                    <label>Name</label>
+                    <input type="text" ref={eventTitleInputRef} />
+                </div>
+                <div className="new-event__control">
+                    <label>Friends</label>
+                    <input type="text" ref={friendsInputRef} />
+                </div>
+                <div className="new-event__control">
+                    <label>Location</label>
+                    <input type="text" ref={locationInputRef} />
+                </div>
+                <div className="new-event__control">
+                    <label>Date</label>
+                    <DatePicker
+                        selected={dateInput}
+                        onChange={(date) => setDateInput(date)}
+                        dateFormat="MMMM d, yyyy h:mm aa"
+                        showTimeSelect={true}
+                        timeIntervals={15}
+                        minDate={new Date('2019-01-01')}
+                        maxDate={new Date('2100-01-01')}
+                    />
+                </div>
+                <div className="new-event__control">
+                    <label>Notes</label>
+                    <input type="text" ref={notesInputRef} />
+                </div>
 
-    return <form onSubmit={submitHandler}>
-        <div className="new-event__controls">
-            <div className="new-event__control">
-                <label>Name</label>
-                <input type="text" ref={eventTitleInputRef} />
+                <div className="new-expense__actions">
+                    <button type="submit">Add Event</button>
+                </div>
             </div>
-            <div className="new-event__control">
-                <label>Friends</label>
-                <input type="text" ref={friendsInputRef}/>
-            </div>
-            <div className="new-event__control" >
-                <label>Location</label>
-                <input type="text" ref={locationInputRef}/>
-            </div>
-            <div className="new-event__control">
-                <label>Date</label>
-                <DatePicker
-            selected={dateInput}
-            onChange={(date) => setDateInput(date)}
-            dateFormat="MMMM d, yyyy h:mm aa"
-            showTimeSelect={true}
-            timeIntervals={15}
-            minDate={new Date("2019-01-01")}
-            maxDate={new Date("2100-01-01")}
-          />
-            </div>
-            <div className="new-event__control" >
-                <label>Notes</label>
-                <input type="text" ref={notesInputRef}/>
-            </div>
-            
-            <div className="new-expense__actions">
-                <button type="submit">Add Event</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    );
 };
 
 export default EventForm;
