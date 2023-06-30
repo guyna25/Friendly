@@ -13,7 +13,7 @@ padding-left: 180px;
 // text-align: center;
 `;
 
-const Events: React.FC<{ title: string, events: EventType[], deleteHandler: Function }> = (props) => {
+const Events: React.FC<{ title: string, events: EventType[], deleteHandler: (id: string) => void}> = (props) => {
   return <><EventListTitle> {props.title} </EventListTitle>
     <StyledEventList>
       {props.events.map(e =>

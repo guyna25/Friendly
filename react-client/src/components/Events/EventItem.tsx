@@ -24,7 +24,7 @@ const EventItem: React.FC<{
   location: string,
   notes: string | undefined,
   date: Date,
-  deleteHandle: Function
+  deleteHandle: (id: string) => void
 }> = (props) => {
   const [inEdit, setInEdit] = useState(false);
 
@@ -33,11 +33,11 @@ const EventItem: React.FC<{
       //only add id and changed fields
       EventApiInstance.updateEvent({
         _id: props._id,
-        ...(titleVal !== props.eventTitle && {eventTitle: titleVal}),
-        ...(friendsVal !== props.friends.join(", ") && { friends: friendsVal.split(",")}),
-        ...(locationVal !== props.location &&{ location: locationVal}),
-        ...(notesVal !== props.notes && { notes: notesVal}),
-        ...(dateVal !== props.date && { date: dateVal}),
+        ...(titleVal !== props.eventTitle && { eventTitle: titleVal }),
+        ...(friendsVal !== props.friends.join(", ") && { friends: friendsVal.split(",") }),
+        ...(locationVal !== props.location && { location: locationVal }),
+        ...(notesVal !== props.notes && { notes: notesVal }),
+        ...(dateVal !== props.date && { date: dateVal }),
       });
     }
 

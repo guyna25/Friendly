@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { PartialEventType } from '../Events/EventType';
 
-const EventForm: React.FC<{ onSaveEvent: Function }> = (props) => {
+const EventForm: React.FC<{ onSaveEvent: (enteredEventData: PartialEventType) => void }> = (props) => {
     const eventTitleInputRef = useRef<HTMLInputElement>(null);
     const friendsInputRef = useRef<HTMLInputElement>(null);
     const locationInputRef = useRef<HTMLInputElement>(null);
@@ -31,15 +31,17 @@ const EventForm: React.FC<{ onSaveEvent: Function }> = (props) => {
     const submitHandler = (event: React.FormEvent) => {
         event.preventDefault();
 
-        const eventData : PartialEventType= {
-            eventTitle: eventTitleInputRef.current!.value,
-            friends: friendsInputRef.current!.value.split(' '),
-            location: locationInputRef.current!.value,
-            date: dateInput!,
-            notes: notesInputRef.current?.value
-        };
-        props.onSaveEvent(eventData);
-        resetForm();
+        if (eventTitleInputRef.current?.value && locationInputRef.current?.value && friendsInputRef.current?.value && dateInput) {
+            const eventData: PartialEventType = {
+                eventTitle: eventTitleInputRef.current?.value ?? "",
+                friends: friendsInputRef.current?.value.split(" ") ?? [],
+                location: locationInputRef.current?.value ?? "",
+                date: dateInput,
+                notes: notesInputRef.current?.value ?? ""
+            };
+            props.onSaveEvent(eventData);
+            resetForm();
+        }
     };
 
     return (

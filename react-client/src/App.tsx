@@ -14,9 +14,6 @@ function App() {
   const [error, setError] = useState(null);
 
   const deleteHandler = (deletedId: string) => {
-    console.log("delete handler");
-    console.log(events);
-    console.log(setEvents);
     setEvents(events.filter((event) => event._id !== deletedId));
   }
 
@@ -39,8 +36,8 @@ function App() {
   const addEventHandler = (data: PartialEventType) => {
     // console.log('Phew...Here;s your data');
     // console.log(data);
-    EventApiInstance.createEvent(data).then((newId) => {
-      const newEvent : EventType =  {
+    EventApiInstance.createEvent(data).then((newId: string) => {
+      const newEvent: EventType = {
         _id: newId,
         "eventTitle": data.eventTitle,
         "friends": data.friends,
@@ -57,7 +54,7 @@ function App() {
 
 
   if (events.length > 0) {
-    content = <Events events={events} title={"Event list"} deleteHandler={deleteHandler}/>;
+    content = <Events events={events} title={"Event list"} deleteHandler={deleteHandler} />;
   }
 
   if (error) {
