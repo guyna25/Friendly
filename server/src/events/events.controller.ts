@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Patch, Body, Param, NotFoundException, Delete} from '@nestjs/common';
-import {CreateEventDTO} from './dtos/create-event.dto';
+import { Controller, Get, Post, Patch, Body, Param, NotFoundException, Delete } from '@nestjs/common';
+import { CreateEventDTO } from './dtos/create-event.dto';
 import { EventsService } from './events.service';
 import { EventInput, EventType } from 'src/models/events.types';
 import { PatchEventDTO } from './dtos/patch-event.dto';
@@ -7,14 +7,14 @@ import { PatchEventDTO } from './dtos/patch-event.dto';
 @Controller('events')
 export class EventsController {
 
-    constructor(public eventsService: EventsService) {}
+    constructor(public eventsService: EventsService) { }
 
     @Post()
     async createEvent(@Body() body: CreateEventDTO) {
         console.log('create event');
         console.log(typeof body.content);
         const newEvent = JSON.parse(body.content);
-        const event_data : EventInput = {
+        const event_data: EventInput = {
             eventTitle: newEvent.eventTitle,
             friends: newEvent.friends,
             location: newEvent.location,
@@ -43,12 +43,13 @@ export class EventsController {
     @Patch()
     update(@Body() body: PatchEventDTO) {
         console.log('update here');
-        let event_data : Partial<EventType> = JSON.parse(body.content) as Partial<EventType>;
+        let event_data: Partial<EventType> = JSON.parse(body.content) as Partial<EventType>;
         this.eventsService.update(event_data);
     }
 
     @Delete()
-    remove(id: string) {
-      return this.eventsService.remove(id);
+    async remove(@Body() body: {content: string}) {
+        const res = await this.eventsService.remove(body.content);
+        console.log("delete res: ", res);
     }
 }

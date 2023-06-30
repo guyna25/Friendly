@@ -25,11 +25,11 @@ export class EventsService {
         return this.eventsRepo.update(content);
     }
 
-    remove(id: string) {
-        return this.eventsRepo.delete(id);
+    async remove(id: string) {
+        return await this.eventsRepo.delete(id);
     }
 
-    deleteAll(content: string) {
-        return this.eventsRepo.deleteAll(content);
+    removeAll() {
+        return this.eventsRepo.deleteAll();
     }
 }

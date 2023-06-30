@@ -1,12 +1,14 @@
 import axios from 'axios';
 import {EventType, PartialEventType} from '../components/Events/EventType';
 
-export default class EventApi {
-    endpoint: string = 'http://localhost:3000/events';
+class EventApi {
+
+    //@TODO add deploy env
+    endpoint: string = process.env.NODE_ENV === 'development' ? 'http://localhost:3000/events' : '';
 
     getEvent() {
         //TODO implement
-    }
+}
 
     async getEvents() {
         try {
@@ -45,13 +47,18 @@ export default class EventApi {
     }
 
     async createEvent(newEvent: PartialEventType) {
-        const response = await axios.post(this.endpoint, {'content': JSON.stringify(newEvent)})
+        const response = await axios.post(this.endpoint, {'content': JSON.stringify(newEvent)});
         console.log('Create response:', response.data);
         return response.data;
     }
 
-    destroyEvent() {
-        //TODO implement
+    async destroyEvent(id: string, afterDelete: Function) {
+        await axios.delete(this.endpoint, {data: {'content': id}});
+        // console.log("afterDelete: ", afterDelete);
+        afterDelete();
     }
 
 }
+
+const EventApiInstance = new EventApi()
+export default EventApiInstance;

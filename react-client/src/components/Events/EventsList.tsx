@@ -1,4 +1,4 @@
-import {EventType} from "./EventType";
+import { EventType } from "./EventType";
 import EventItem from "./EventItem";
 import React from 'react';
 import styled from 'styled-components';
@@ -13,21 +13,22 @@ padding-left: 180px;
 // text-align: center;
 `;
 
-const Events : React.FC<{title: string, events:EventType[]}>= (props) => {
-    return <><EventListTitle> {props.title} </EventListTitle>
+const Events: React.FC<{ title: string, events: EventType[], deleteHandler: Function }> = (props) => {
+  return <><EventListTitle> {props.title} </EventListTitle>
     <StyledEventList>
-    {props.events.map(e => 
-      <EventItem 
-        _id={e._id}
-        eventTitle={e.eventTitle} friends={e.friends}
-        location={e.location}
-        date={e.date}
-        notes={e.notes ?? ''}
+      {props.events.map(e =>
+        <EventItem
+          _id={e._id}
+          eventTitle={e.eventTitle} friends={e.friends}
+          location={e.location}
+          date={e.date}
+          notes={e.notes ?? ''}
+          deleteHandle={props.deleteHandler}
         />
       )}
-      </StyledEventList>
-      </>
-      ;
+    </StyledEventList>
+  </>
+    ;
 }
 
 export default Events;

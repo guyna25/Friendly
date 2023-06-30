@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { readFile, writeFile } from 'fs/promises';
 import { EventType, EventInput } from 'src/models/events.types';
 import { EventModel } from "../models/events.model";
 import { ObjectId } from 'mongodb';
@@ -38,10 +37,11 @@ export class EventsRepositoyry {
     }
 
     async delete(id: string) {
-        EventModel.deleteOne({ _id: id });
+        console.log("delete received");
+        return await EventModel.deleteOne({ _id: id });
     }
 
-    async deleteAll(id: string) {
+    async deleteAll() {
         EventModel.deleteMany({});
     }
 }

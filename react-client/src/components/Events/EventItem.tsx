@@ -1,9 +1,10 @@
-import React, { useContext, useState } from 'react';
-import { get_full_day_hour } from '../../utils/Utils';
 import Button from '@mui/material/Button';
-import styled from 'styled-components';
+import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
-import EventContext from '../../api/EventsContext';
+import styled from 'styled-components';
+
+import EventApiInstance from '../../api/EventApi';
+import { get_full_day_hour } from '../../utils/Utils';
 
 const StyledEventItem = styled.li`
   border-color: #050D1F;
@@ -23,14 +24,14 @@ const EventItem: React.FC<{
   location: string,
   notes: string | undefined,
   date: Date,
+  deleteHandle: Function
 }> = (props) => {
   const [inEdit, setInEdit] = useState(false);
-  const eventContext = useContext(EventContext);
 
   const saveHandler = () => {
     if ((titleVal !== props.eventTitle) || (friendsVal !== props.friends.join(", ")) || (locationVal !== props.location) || (dateVal !== props.date) || (notesVal !== props.notes)) {
       //only add id and changed fields
-      eventContext.apiService.updateEvent({
+      EventApiInstance.updateEvent({
         _id: props._id,
         ...(titleVal !== props.eventTitle && {eventTitle: titleVal}),
         ...(friendsVal !== props.friends.join(", ") && { friends: friendsVal.split(",")}),
@@ -72,6 +73,11 @@ const EventItem: React.FC<{
     <Button onClick={() => {
       setInEdit(true);
     }}>Edit</Button>
+    <Button onClick={() => {
+      if (window.confirm("You are about to delete this event")) {
+        EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
+      }
+    }}>Delete</Button>
     <div>Name: {titleVal}</div>
     <div>Friends: {friendsVal}</div>
     <div>Date: {`${get_full_day_hour(dateVal)} ${dateVal.toLocaleDateString()}`}</div>

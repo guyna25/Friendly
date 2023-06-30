@@ -12,5 +12,5 @@ export interface PartialEventType {
     "friends": string[],
     "location": string,
     "notes": string | undefined,
-    "date": Date   
+    "date": Date
 };

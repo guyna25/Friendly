@@ -1,24 +1,29 @@
-import NewEvent from './components/NewEvent/NewEvent';
 import Events from './components/Events/EventsList';
+import NewEvent from './components/NewEvent/NewEvent';
 
+import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
-import EventApi from './api/EventApi';
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import {EventType, PartialEventType} from './components/Events/EventType';
-import EventContext from './api/EventsContext';
+import EventApiInstance from './api/EventApi';
+import { EventType, PartialEventType } from './components/Events/EventType';
 
 
 function App() {
 
-  const eventApi = useRef(new EventApi());
   const [events, setEvents] = useState<EventType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const deleteHandler = (deletedId: string) => {
+    console.log("delete handler");
+    console.log(events);
+    console.log(setEvents);
+    setEvents(events.filter((event) => event._id !== deletedId));
+  }
+
   const fetchEventsHandler = useCallback(async () => {
     setError(null);
     try {
-      const data = await eventApi.current.getEvents();
+      const data = await EventApiInstance.getEvents();
 
       setEvents(data);
     } catch (error: any) {
@@ -34,7 +39,7 @@ function App() {
   const addEventHandler = (data: PartialEventType) => {
     // console.log('Phew...Here;s your data');
     // console.log(data);
-    eventApi.current.createEvent(data).then((newId) => {
+    EventApiInstance.createEvent(data).then((newId) => {
       const newEvent : EventType =  {
         _id: newId,
         "eventTitle": data.eventTitle,
@@ -52,7 +57,7 @@ function App() {
 
 
   if (events.length > 0) {
-    content = <Events events={events} title={"Event list"} />;
+    content = <Events events={events} title={"Event list"} deleteHandler={deleteHandler}/>;
   }
 
   if (error) {
@@ -67,9 +72,7 @@ function App() {
     <div>
       <h1 style={{ 'padding': '20px' }}>Friendly - meet your friends</h1>
       <div style={{ 'float': 'left' }}>
-        <EventContext.Provider key={"context"} value={{apiService: eventApi.current}}>
         {content}
-        </EventContext.Provider>
       </div>
       <div style={{ 'float': 'left' }}>
         <NewEvent onAddEvent={addEventHandler} />
