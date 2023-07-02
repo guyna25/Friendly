@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { PartialEventType } from '../Events/EventType';
+import { Button, TextField } from '@mui/material';
 
 const EventForm: React.FC<{ onSaveEvent: (enteredEventData: PartialEventType) => void }> = (props) => {
     const eventTitleInputRef = useRef<HTMLInputElement>(null);
@@ -30,7 +31,6 @@ const EventForm: React.FC<{ onSaveEvent: (enteredEventData: PartialEventType) =>
 
     const submitHandler = (event: React.FormEvent) => {
         event.preventDefault();
-
         if (eventTitleInputRef.current?.value && locationInputRef.current?.value && friendsInputRef.current?.value && dateInput) {
             const eventData: PartialEventType = {
                 eventTitle: eventTitleInputRef.current?.value ?? "",
@@ -47,18 +47,10 @@ const EventForm: React.FC<{ onSaveEvent: (enteredEventData: PartialEventType) =>
     return (
         <form onSubmit={submitHandler}>
             <div className="new-event__controls">
-                <div className="new-event__control">
-                    <label>Name</label>
-                    <input type="text" ref={eventTitleInputRef} />
-                </div>
-                <div className="new-event__control">
-                    <label>Friends</label>
-                    <input type="text" ref={friendsInputRef} />
-                </div>
-                <div className="new-event__control">
-                    <label>Location</label>
-                    <input type="text" ref={locationInputRef} />
-                </div>
+                <TextField id="standard-basic" variant="standard" label="Title" inputRef={eventTitleInputRef} type="text" />
+                <TextField id="standard-basic" variant="standard" label="Friends" inputRef={friendsInputRef} type="text" />
+                <TextField id="standard-basic" variant="standard" label="Location" inputRef={locationInputRef} type="text" />
+
                 <div className="new-event__control">
                     <label>Date</label>
                     <DatePicker
@@ -71,13 +63,11 @@ const EventForm: React.FC<{ onSaveEvent: (enteredEventData: PartialEventType) =>
                         maxDate={new Date('2100-01-01')}
                     />
                 </div>
-                <div className="new-event__control">
-                    <label>Notes</label>
-                    <input type="text" ref={notesInputRef} />
-                </div>
+
+                <TextField id="standard-basic" variant="standard" label="Notes" inputRef={notesInputRef} type="text" />
 
                 <div className="new-expense__actions">
-                    <button type="submit">Add Event</button>
+                    <Button type="submit" variant='contained'> Add Event</Button>
                 </div>
             </div>
         </form>

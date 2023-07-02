@@ -2,19 +2,15 @@ import { EventType } from "./EventType";
 import EventItem from "./EventItem";
 import React from 'react';
 import styled from 'styled-components';
+import { Typography } from "@mui/material";
 
 const StyledEventList = styled.ul`
   padding: 10px;
   text-align: center;
 `;
 
-const EventListTitle = styled.h2`
-padding-left: 180px;
-// text-align: center;
-`;
-
 const Events: React.FC<{ title: string, events: EventType[], deleteHandler: (id: string) => void}> = (props) => {
-  return <><EventListTitle> {props.title} </EventListTitle>
+  return <><Typography variant="h5"> {props.title} </Typography>
     <StyledEventList>
       {props.events.map(e =>
         <EventItem

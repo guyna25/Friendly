@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import EventApiInstance from './api/EventApi';
 import { EventType, PartialEventType } from './components/Events/EventType';
+import Typography from '@mui/material/Typography';
 
 
 function App() {
@@ -34,8 +35,6 @@ function App() {
   }, [fetchEventsHandler]);
 
   const addEventHandler = (data: PartialEventType) => {
-    // console.log('Phew...Here;s your data');
-    // console.log(data);
     EventApiInstance.createEvent(data).then((newId: string) => {
       const newEvent: EventType = {
         _id: newId,
@@ -67,6 +66,7 @@ function App() {
 
   return (
     <div>
+      <Typography variant="h1"> Friendly - meet your friends </Typography>
       <h1 style={{ 'padding': '20px' }}>Friendly - meet your friends</h1>
       <div style={{ 'float': 'left' }}>
         {content}
