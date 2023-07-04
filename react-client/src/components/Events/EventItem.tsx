@@ -1,21 +1,10 @@
-import Button from '@mui/material/Button';
+import { Button, Card, CardContent, CardHeader, TextField, Typography } from '@mui/material';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
-import styled from 'styled-components';
-
 import EventApiInstance from '../../api/EventApi';
-import { get_full_day_hour } from '../../utils/Utils';
-
-const StyledEventItem = styled.li`
-  border-color: #050D1F;
-  width: 400px;
-  height: 110px;
-  border: 1px solid black;
-  background-color: #6994EF;
-  padding: 30px;
-  border-radius: 10px;
-  margin-bottom: 5px;
-`;
 
 const EventItem: React.FC<{
   _id: string,
@@ -30,7 +19,6 @@ const EventItem: React.FC<{
 
   const saveHandler = () => {
     if ((titleVal !== props.eventTitle) || (friendsVal !== props.friends.join(", ")) || (locationVal !== props.location) || (dateVal !== props.date) || (notesVal !== props.notes)) {
-      //only add id and changed fields
       EventApiInstance.updateEvent({
         _id: props._id,
         ...(titleVal !== props.eventTitle && { eventTitle: titleVal }),
@@ -51,40 +39,69 @@ const EventItem: React.FC<{
   const [dateVal, setDateVal] = useState(props.date);
 
   if (inEdit) {
-    return (<StyledEventItem>
-      Name: <input defaultValue={titleVal} onChange={e => settitleVal(e.target.value)} /> <br />
-      Friends: <input defaultValue={friendsVal} onChange={e => setfriendsVal(e.target.value)} /><br />
-      Date: <DatePicker
-        selected={dateVal}
-        onChange={(date) => setDateVal(date!)}
-        dateFormat="MMMM d, yyyy h:mm aa"
-        showTimeSelect={true}
-        timeIntervals={15}
-        minDate={new Date("2019-01-01")}
-        maxDate={new Date("2100-01-01")}
-      /><br />
-      Location: <input defaultValue={locationVal} onChange={e => setlocationVal(e.target.value)} /><br />
-      Notes: <input defaultValue={notesVal} onChange={e => setnotesVal(e.target.value)} /><br />
-      <Button onClick={saveHandler}>Save</Button>
-    </StyledEventItem>);
+    return (<Card>
+      <CardHeader
+        title={<TextField id="standard-basic" variant="standard" label="Title" type="text" value={titleVal}
+          onChange={(e) => settitleVal(e.target.value)}
+        />}
+        action={
+          <Button onClick={saveHandler}>Save</Button>
+        }
+      />
+      <CardContent>
+        <TextField id="standard-basic" variant="standard" label="Friends" type="text" value={friendsVal}
+          onChange={(e) => setfriendsVal(e.target.value)}
+        />
+        Date: <DatePicker
+          selected={dateVal}
+          onChange={(date) => setDateVal(date ?? new Date())}
+          dateFormat="MMMM d, yyyy h:mm aa"
+          showTimeSelect={true}
+          timeIntervals={15}
+          minDate={new Date("2019-01-01")}
+          maxDate={new Date("2100-01-01")}
+        /><br />
+        <TextField id="standard-basic" variant="standard" label="Location" type="text" value={locationVal}
+          onChange={(e) => setlocationVal(e.target.value)}
+        />
+        <TextField id="standard-basic" variant="standard" label="Notes" type="text" value={notesVal}
+          onChange={(e) => setnotesVal(e.target.value)}
+        />
+      </CardContent>
+    </Card>);
   }
 
-  return (<StyledEventItem>
-    <Button onClick={() => {
-      setInEdit(true);
-    }}>Edit</Button>
-    <Button onClick={() => {
-      if (window.confirm("You are about to delete this event")) {
-        EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
-      }
-    }}>Delete</Button>
-    <div>Name: {titleVal}</div>
-    <div>Friends: {friendsVal}</div>
-    <div>Date: {`${get_full_day_hour(dateVal)} ${dateVal.toLocaleDateString()}`}</div>
-    <div>Location: {locationVal}</div>
-    {props.notes !== "" && <div>Notes: {notesVal}</div>}
-  </StyledEventItem>
-  );
+  return <Card>
+    <CardHeader
+      title={titleVal}
+      action={<>
+        <Button onClick={() => {
+          setInEdit(true);
+        }}>Edit</Button>
+        <Button onClick={() => {
+          if (window.confirm("You are about to delete this event")) {
+            EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
+          }
+        }}>Delete</Button>
+      </>}
+    />
+    <CardContent>
+      <Typography variant="body2" color="text.secondary">
+        {friendsVal}
+      </Typography>
+      <Typography variant="body2" color="text.secondary">
+        {locationVal}
+      </Typography>
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <DateTimeField defaultValue={dateVal}
+          ampm={false}
+        />
+      </LocalizationProvider>
+      <Typography variant="body2" color="text.secondary">
+        {notesVal}
+      </Typography>
+    </CardContent>
+  </Card>;
 }
 
 export default EventItem;
