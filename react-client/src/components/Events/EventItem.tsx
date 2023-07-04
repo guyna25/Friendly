@@ -2,9 +2,10 @@ import { Button, Card, CardContent, CardHeader, TextField, Typography } from '@m
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
 import EventApiInstance from '../../api/EventApi';
+import { DateTimePicker } from '@mui/x-date-pickers';
 
 const EventItem: React.FC<{
   _id: string,
@@ -52,15 +53,19 @@ const EventItem: React.FC<{
         <TextField id="standard-basic" variant="standard" label="Friends" type="text" value={friendsVal}
           onChange={(e) => setfriendsVal(e.target.value)}
         />
-        Date: <DatePicker
-          selected={dateVal}
-          onChange={(date) => setDateVal(date ?? new Date())}
-          dateFormat="MMMM d, yyyy h:mm aa"
-          showTimeSelect={true}
-          timeIntervals={15}
-          minDate={new Date("2019-01-01")}
-          maxDate={new Date("2100-01-01")}
-        /><br />
+
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DemoContainer components={['DateTimePicker']}>
+            <DateTimePicker 
+              defaultValue={dateVal}
+              value={dateVal}
+              onChange={(date) => setDateVal(date ?? new Date())}
+              ampm={false}
+              minDate={new Date("2019-01-01")}
+              maxDate={new Date("2100-01-01")}
+            />
+          </DemoContainer>
+        </LocalizationProvider>
         <TextField id="standard-basic" variant="standard" label="Location" type="text" value={locationVal}
           onChange={(e) => setlocationVal(e.target.value)}
         />
@@ -93,8 +98,10 @@ const EventItem: React.FC<{
         {locationVal}
       </Typography>
       <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DateTimeField defaultValue={dateVal}
+        <DateTimePicker
+          defaultValue={dateVal}
           ampm={false}
+          readOnly ={true}
         />
       </LocalizationProvider>
       <Typography variant="body2" color="text.secondary">
