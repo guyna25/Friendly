@@ -1,11 +1,11 @@
-import { Button, Card, CardContent, CardHeader, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Grid, TextField, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+
 import React, { useState } from 'react';
-import EventApiInstance from '../../api/EventApi';
 import { DateTimePicker } from '@mui/x-date-pickers';
+import EventApiInstance from '../../api/EventApi';
+import DateDisplay from '../DateDisplay';
 
 const EventItem: React.FC<{
   _id: string,
@@ -55,16 +55,16 @@ const EventItem: React.FC<{
         />
 
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <DemoContainer components={['DateTimePicker']}>
-            <DateTimePicker 
-              defaultValue={dateVal}
-              value={dateVal}
-              onChange={(date) => setDateVal(date ?? new Date())}
-              ampm={false}
-              minDate={new Date("2019-01-01")}
-              maxDate={new Date("2100-01-01")}
-            />
-          </DemoContainer>
+
+          <DateTimePicker
+            defaultValue={dateVal}
+            value={dateVal}
+            onChange={(date) => setDateVal(date ?? new Date())}
+            ampm={false}
+            minDate={new Date("2019-01-01")}
+            maxDate={new Date("2100-01-01")}
+          />
+
         </LocalizationProvider>
         <TextField id="standard-basic" variant="standard" label="Location" type="text" value={locationVal}
           onChange={(e) => setlocationVal(e.target.value)}
@@ -78,36 +78,39 @@ const EventItem: React.FC<{
 
   return <Card>
     <CardHeader
-      title={titleVal}
-      action={<>
-        <Button onClick={() => {
-          setInEdit(true);
-        }}>Edit</Button>
-        <Button onClick={() => {
-          if (window.confirm("You are about to delete this event")) {
-            EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
-          }
-        }}>Delete</Button>
-      </>}
+      title={
+        <Grid container xs={12} spacing={1}>
+          <Grid item xs={4} >
+            {titleVal}
+          </Grid>
+          <Grid item >
+            <DateDisplay dateVal={dateVal}/>
+          </Grid>
+        </Grid>
+      }
     />
-    <CardContent>
+    <CardContent sx={{ textAlign: 'left' }}>
       <Typography variant="body2" color="text.secondary">
-        {friendsVal}
+        Friends: {friendsVal}
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        {locationVal}
+        Location: {locationVal}
       </Typography>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <DateTimePicker
-          defaultValue={dateVal}
-          ampm={false}
-          readOnly ={true}
-        />
-      </LocalizationProvider>
       <Typography variant="body2" color="text.secondary">
-        {notesVal}
+        { notesVal ? `Notes: ${notesVal}` : null}
       </Typography>
     </CardContent>
+    <CardActions>
+
+      <Button onClick={() => {
+        setInEdit(true);
+      }}>Edit</Button>
+      <Button onClick={() => {
+        if (window.confirm("You are about to delete this event")) {
+          EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
+        }
+      }}>Delete</Button>
+    </CardActions>
   </Card>;
 }
 
