@@ -1,11 +1,29 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Grid, Stack, TextField, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
 import React, { useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import EventApiInstance from '../../api/EventApi';
 import DateDisplay from '../DateDisplay';
+
+const CARD_TEXT_COLOR = "#862B0D";
+const BUTTON_TEXT_COLOR = "#862B0D";
+const CARD_BACKGROUND_COLOR = "#F9F6DD";
+const CARD_BORDER_COLOR = "#FFDEB4";
+const CARD_CONTENT_TEXT_COLOR = "#2B7F2C";
+
+const StyledCard = styled(Card)`
+  background-color: ${CARD_BACKGROUND_COLOR};
+  border-radius: 8px;
+  border: 2px solid ${CARD_BORDER_COLOR};
+`;
+
+const StyledCardHeader = styled(CardHeader)`
+  border-radius: ${CARD_BACKGROUND_COLOR};
+  border: 2px solid ${CARD_BORDER_COLOR};
+`;
 
 const EventItem: React.FC<{
   _id: string,
@@ -76,42 +94,55 @@ const EventItem: React.FC<{
     </Card>);
   }
 
-  return <Card>
-    <CardHeader
+  return <StyledCard>
+    <StyledCardHeader
       title={
         <Grid container xs={12} spacing={1}>
           <Grid item xs={4} >
-            {titleVal}
+            <Typography variant="h5" color={CARD_TEXT_COLOR}>
+              {titleVal}
+            </Typography>
           </Grid>
-          <Grid item >
-            <DateDisplay dateVal={dateVal}/>
+          <Grid item xs={8}>
+            <Typography variant="h5" color={CARD_TEXT_COLOR}>
+              <DateDisplay dateVal={dateVal} />
+            </Typography>
           </Grid>
         </Grid>
       }
     />
     <CardContent sx={{ textAlign: 'left' }}>
-      <Typography variant="body2" color="text.secondary">
-        Friends: {friendsVal}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        Location: {locationVal}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        { notesVal ? `Notes: ${notesVal}` : null}
-      </Typography>
+      <Stack>
+        <Typography variant="body2" color={CARD_CONTENT_TEXT_COLOR}>
+          Friends: {friendsVal}
+        </Typography>
+        <Typography variant="body2" color={CARD_CONTENT_TEXT_COLOR}>
+          Location: {locationVal}
+        </Typography>
+        <Typography variant="body2" color={CARD_CONTENT_TEXT_COLOR}>
+          {notesVal ? `Notes: ${notesVal}` : null}
+        </Typography>
+      </Stack>
     </CardContent>
+
     <CardActions>
 
-      <Button onClick={() => {
-        setInEdit(true);
-      }}>Edit</Button>
-      <Button onClick={() => {
-        if (window.confirm("You are about to delete this event")) {
-          EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
-        }
-      }}>Delete</Button>
+      <Button
+        variant='contained'
+        sx={{ color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR }}
+        onClick={() => {
+          setInEdit(true);
+        }}>Edit</Button>
+      <Button
+        variant='contained'
+        sx={{ color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR }}
+        onClick={() => {
+          if (window.confirm("You are about to delete this event")) {
+            EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
+          }
+        }}>Delete</Button>
     </CardActions>
-  </Card>;
+  </StyledCard>;
 }
 
 export default EventItem;

@@ -2,7 +2,7 @@ import React from 'react';
 import EventForm from './EventForm';
 import {PartialEventType} from '../Events/EventType';
 
-const NewEvent: React.FC<any> = (props) => {
+const NewEvent: React.FC<{onAddEvent: (data: PartialEventType) => void}> = (props) => {
     const saveEventDataHandler = (enteredEventData: PartialEventType) => {
         props.onAddEvent(enteredEventData);
     };
