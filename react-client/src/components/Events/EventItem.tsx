@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, Stack, TextField, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, CardHeader, Grid, InputLabel, Stack, TextField, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 
@@ -13,6 +13,7 @@ const BUTTON_TEXT_COLOR = "#862B0D";
 const CARD_BACKGROUND_COLOR = "#F9F6DD";
 const CARD_BORDER_COLOR = "#FFDEB4";
 const CARD_CONTENT_TEXT_COLOR = "#2B7F2C";
+const button_style = { color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR }
 
 const StyledCard = styled(Card)`
   background-color: ${CARD_BACKGROUND_COLOR};
@@ -58,40 +59,63 @@ const EventItem: React.FC<{
   const [dateVal, setDateVal] = useState(props.date);
 
   if (inEdit) {
-    return (<Card>
-      <CardHeader
-        title={<TextField id="standard-basic" variant="standard" label="Title" type="text" value={titleVal}
-          onChange={(e) => settitleVal(e.target.value)}
-        />}
-        action={
-          <Button onClick={saveHandler}>Save</Button>
+    return (<StyledCard>
+      <StyledCardHeader
+        title={<Grid container spacing={2} xs={12}>
+          <Grid xs={4}>
+            <InputLabel htmlFor="eventTitleField">Title</InputLabel>
+          </Grid>
+          <Grid xs={8}>
+            <TextField id="standard-basic" variant="standard" type="text" value={titleVal}
+              onChange={(e) => settitleVal(e.target.value)}
+            />
+          </Grid>
+        </Grid>
         }
       />
       <CardContent>
-        <TextField id="standard-basic" variant="standard" label="Friends" type="text" value={friendsVal}
-          onChange={(e) => setfriendsVal(e.target.value)}
-        />
+        <Grid xs={12}>
+          <Grid item xs={4}>
+            <InputLabel htmlFor="dateInput">Date</InputLabel>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
 
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-
-          <DateTimePicker
-            defaultValue={dateVal}
-            value={dateVal}
-            onChange={(date) => setDateVal(date ?? new Date())}
-            ampm={false}
-            minDate={new Date("2019-01-01")}
-            maxDate={new Date("2100-01-01")}
-          />
-
-        </LocalizationProvider>
-        <TextField id="standard-basic" variant="standard" label="Location" type="text" value={locationVal}
-          onChange={(e) => setlocationVal(e.target.value)}
-        />
-        <TextField id="standard-basic" variant="standard" label="Notes" type="text" value={notesVal}
-          onChange={(e) => setnotesVal(e.target.value)}
-        />
+              <DateTimePicker
+                defaultValue={dateVal}
+                value={dateVal}
+                onChange={(date) => setDateVal(date ?? new Date())}
+                ampm={false}
+                minDate={new Date("2019-01-01")}
+                maxDate={new Date("2100-01-01")}
+              />
+            </LocalizationProvider>
+          </Grid>
+          <Grid item xs={4}>
+            <InputLabel htmlFor="friendsField">Friends</InputLabel>
+            <TextField id="standard-basic" variant="standard" label="Friends" type="text" value={friendsVal}
+              onChange={(e) => setfriendsVal(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <InputLabel htmlFor="locationField">Location</InputLabel>
+            <TextField id="standard-basic" variant="standard" label="Location" type="text" value={locationVal}
+              onChange={(e) => setlocationVal(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <InputLabel htmlFor="notesField">Notes</InputLabel>
+            <TextField id="standard-basic" variant="standard" label="Notes" type="text" value={notesVal}
+              onChange={(e) => setnotesVal(e.target.value)}
+            />
+          </Grid>
+        </Grid>
       </CardContent>
-    </Card>);
+      <CardActions>
+        <Button
+          variant='contained'
+          sx={button_style}
+          onClick={saveHandler}>Save</Button>
+      </CardActions>
+    </StyledCard>);
   }
 
   return <StyledCard>
@@ -129,13 +153,13 @@ const EventItem: React.FC<{
 
       <Button
         variant='contained'
-        sx={{ color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR }}
+        sx={button_style}
         onClick={() => {
           setInEdit(true);
         }}>Edit</Button>
       <Button
         variant='contained'
-        sx={{ color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR }}
+        sx={button_style}
         onClick={() => {
           if (window.confirm("You are about to delete this event")) {
             EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));

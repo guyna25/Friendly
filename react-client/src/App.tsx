@@ -6,7 +6,8 @@ import './App.css';
 import EventApiInstance from './api/EventApi';
 import { EventType, PartialEventType } from './components/Events/EventType';
 import Typography from '@mui/material/Typography';
-
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme/MuiTheme';
 
 function App() {
 
@@ -65,16 +66,18 @@ function App() {
   }
 
   return (
-    <div>
-      <Typography variant="h1"> Friendly - meet your friends </Typography>
-      <h1 style={{ 'padding': '20px' }}>Friendly - meet your friends</h1>
-      <div style={{ 'float': 'left' }}>
-        {content}
+    <ThemeProvider theme={theme}>
+      <div>
+        <Typography variant="h1"> Friendly - meet your friends </Typography>
+        <h1 style={{ 'padding': '20px' }}>Friendly - meet your friends</h1>
+        <div style={{ 'float': 'left' }}>
+          {content}
+        </div>
+        <div style={{ 'float': 'left' }}>
+          <NewEvent onAddEvent={addEventHandler} />
+        </div>
       </div>
-      <div style={{ 'float': 'left' }}>
-        <NewEvent onAddEvent={addEventHandler} />
-      </div>
-    </div>
+    </ThemeProvider>
   );
 }
 
