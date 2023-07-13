@@ -1,18 +1,15 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, InputLabel, Stack, TextField, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { CARD_TEXT_COLOR, BUTTON_TEXT_COLOR, CARD_BACKGROUND_COLOR, CARD_BORDER_COLOR, CARD_CONTENT_TEXT_COLOR } from '../../theme/Colors';
 
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { DateTimePicker } from '@mui/x-date-pickers';
 import EventApiInstance from '../../api/EventApi';
 import DateDisplay from '../DateDisplay';
+import EventButton from '../EventButton';
 
-const CARD_TEXT_COLOR = "#862B0D";
-const BUTTON_TEXT_COLOR = "#862B0D";
-const CARD_BACKGROUND_COLOR = "#F9F6DD";
-const CARD_BORDER_COLOR = "#FFDEB4";
-const CARD_CONTENT_TEXT_COLOR = "#2B7F2C";
 const button_style = { color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR }
 
 const StyledCard = styled(Card)`
@@ -110,10 +107,8 @@ const EventItem: React.FC<{
         </Grid>
       </CardContent>
       <CardActions>
-        <Button
-          variant='contained'
-          sx={button_style}
-          onClick={saveHandler}>Save</Button>
+      <EventButton content='Save' onClick={saveHandler}
+      />
       </CardActions>
     </StyledCard>);
   }
@@ -150,21 +145,16 @@ const EventItem: React.FC<{
     </CardContent>
 
     <CardActions>
-
-      <Button
-        variant='contained'
-        sx={button_style}
-        onClick={() => {
-          setInEdit(true);
-        }}>Edit</Button>
-      <Button
-        variant='contained'
-        sx={button_style}
-        onClick={() => {
-          if (window.confirm("You are about to delete this event")) {
-            EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
-          }
-        }}>Delete</Button>
+      <EventButton content='Edit' onClick={() => {
+        setInEdit(true);
+      }}
+      />
+      <EventButton content='Delete' onClick={() => {
+        if (window.confirm("You are about to delete this event")) {
+          EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
+        }
+      }}
+      />
     </CardActions>
   </StyledCard>;
 }

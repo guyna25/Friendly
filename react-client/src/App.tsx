@@ -1,13 +1,16 @@
 import Events from './components/Events/EventsList';
 import NewEvent from './components/NewEvent/NewEvent';
 
+import { Box, Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import { ThemeProvider } from '@mui/material/styles';
 import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import EventApiInstance from './api/EventApi';
 import { EventType, PartialEventType } from './components/Events/EventType';
-import Typography from '@mui/material/Typography';
-import { ThemeProvider } from '@mui/material/styles';
+import { APP_BACKGROUND_COLOR } from './theme/Colors';
 import theme from './theme/MuiTheme';
+import AppHeader from './components/Header';
 
 function App() {
 
@@ -54,7 +57,7 @@ function App() {
 
 
   if (events.length > 0) {
-    content = <Events events={events} title={"Event list"} deleteHandler={deleteHandler} />;
+    content = <Events events={events} deleteHandler={deleteHandler} />;
   }
 
   if (error) {
@@ -67,16 +70,17 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
-        <Typography variant="h1"> Friendly - meet your friends </Typography>
-        <h1 style={{ 'padding': '20px' }}>Friendly - meet your friends</h1>
-        <div style={{ 'float': 'left' }}>
-          {content}
-        </div>
-        <div style={{ 'float': 'left' }}>
-          <NewEvent onAddEvent={addEventHandler} />
-        </div>
-      </div>
+      <AppHeader title='Friendly - meet your friends'></AppHeader>
+      <Box sx={{ backgroundColor: APP_BACKGROUND_COLOR, marginLeft: '10px' }}>
+        <Grid container spacing={2} direction="row" >
+          <Grid item direction="column" xs={3}>
+            {content}
+          </Grid>
+          <Grid item xs={6}>
+            <NewEvent onAddEvent={addEventHandler} />
+          </Grid>
+        </Grid>
+      </Box>
     </ThemeProvider>
   );
 }

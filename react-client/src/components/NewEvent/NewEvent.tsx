@@ -1,16 +1,25 @@
+import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React from 'react';
+import { EVENTITEM_BACKGROUND_COLOR, EVENTITEM_BORDER_COLOR } from '../../theme/Colors';
+import { PartialEventType } from '../Events/EventType';
 import EventForm from './EventForm';
-import {PartialEventType} from '../Events/EventType';
 
-const NewEvent: React.FC<{onAddEvent: (data: PartialEventType) => void}> = (props) => {
+const StyledBox = styled(Box)`
+  background-color: ${EVENTITEM_BACKGROUND_COLOR};
+  border: 2px solid ${EVENTITEM_BORDER_COLOR};
+  spcce: 2px;'
+`;
+
+const NewEvent: React.FC<{ onAddEvent: (data: PartialEventType) => void }> = (props) => {
     const saveEventDataHandler = (enteredEventData: PartialEventType) => {
         props.onAddEvent(enteredEventData);
     };
 
     return (
-        <div className="new-event">
+        <StyledBox>
             <EventForm onSaveEvent={saveEventDataHandler} />
-        </div>
+        </StyledBox>
     );
 };
 
