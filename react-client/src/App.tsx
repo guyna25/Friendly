@@ -2,7 +2,6 @@ import Events from './components/Events/EventsList';
 import NewEvent from './components/NewEvent/NewEvent';
 
 import { Box, Grid } from '@mui/material';
-import Typography from '@mui/material/Typography';
 import { ThemeProvider } from '@mui/material/styles';
 import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
@@ -11,6 +10,7 @@ import { EventType, PartialEventType } from './components/Events/EventType';
 import { APP_BACKGROUND_COLOR } from './theme/Colors';
 import theme from './theme/MuiTheme';
 import AppHeader from './components/Header';
+import MyCalendar from './components/Calendar';
 
 function App() {
 
@@ -71,6 +71,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <AppHeader title='Friendly - meet your friends'></AppHeader>
+      <Box>
+        <MyCalendar events={events}/>
+          
+      </Box>
       <Box sx={{ backgroundColor: APP_BACKGROUND_COLOR, marginLeft: '10px' }}>
         <Grid container spacing={2} direction="row" >
           <Grid item direction="column" xs={3}>
