@@ -1,3 +1,9 @@
 [submodule "react-client/big-calendar-fork"]
 	path = react-client/big-calendar-fork
 	url = https://github.com/jquense/react-big-calendar.git
+[submodule "react-client/vendor/big-calendar-fork"]
+	path = react-client/vendor/big-calendar-fork
+	url = https://github.com/jquense/react-big-calendar.git
+[submodule "react-client/src/vendor/big-calendar-fork"]
+	path = react-client/src/vendor/big-calendar-fork
+	url = https://github.com/jquense/react-big-calendar.git
