@@ -1,8 +1,14 @@
-import { registerDecorator, ValidationOptions, ValidationArguments, isString, isEmpty, isDateString} from 'class-validator';
-import { EventType } from 'src/models/events.types';
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidationArguments,
+  isString,
+  isEmpty,
+  isDateString,
+} from 'class-validator';
 
 export function IsValidEvent(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'isValidEventType',
       target: object.constructor,
@@ -10,20 +16,22 @@ export function IsValidEvent(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          let value_map = JSON.parse(value);
-          const stringsVals = ['eventTitle', 'friends', 'location']
+          const value_map = JSON.parse(value);
+          const stringsVals = ['title', 'friends', 'location'];
           stringsVals.forEach((valName) => {
             if (!isString(value_map[valName]) || isEmpty(value_map[valName])) {
               return false;
-            };
+            }
           });
-          if (!isDateString(value_map['date'])) {
-              return false;
+          if (
+            !isDateString(value_map['start']) ||
+            !isDateString(value_map['end'])
+          ) {
+            return false;
           }
-          if (isEmpty(value_map['notes'])){
+          if (isEmpty(value_map['notes'])) {
             return true;
-          }
-          else {
+          } else {
             return isString(value_map['notes']);
           }
         },

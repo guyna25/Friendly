@@ -1,15 +1,19 @@
 import React from 'react';
 import EventItem from "./EventItem";
 import { EventType } from "./EventType";
+import EventCalendar from './EventCalendar';
 
 const Events: React.FC<{ events: EventType[], deleteHandler: (id: string) => void }> = (props) => {
   return <>
+    <EventCalendar events={props.events} />
     {props.events.map(e =>
       <EventItem
         _id={e._id}
-        eventTitle={e.eventTitle} friends={e.friends}
+        title={e.title} 
+        friends={e.friends}
         location={e.location}
-        date={e.date}
+        start={e.start}
+        end={e.end}
         notes={e.notes ?? ''}
         deleteHandle={props.deleteHandler}
       />

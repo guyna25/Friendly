@@ -6,4 +6,3 @@ export function get_full_access_url(
   const res = `mongodb+srv://${username}:${password}@${cluster_url}/?retryWrites=true&w=majority`;
   return res;
 }
-

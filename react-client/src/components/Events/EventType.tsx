@@ -1,16 +1,18 @@
 export interface EventType {
     _id: string,
-    eventTitle: string,
+    title: string,
     friends: string[],
     location: string,
     notes: string | undefined,
-    date: Date
-};
+    start: Date,
+    end: Date
+}
 
 export interface PartialEventType {
-    eventTitle: string,
+    title: string,
     friends: string[],
     location: string,
     notes: string | undefined,
-    date: Date
-};
+    start: Date,
+    end: Date
+}

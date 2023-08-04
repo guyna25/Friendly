@@ -1,35 +1,32 @@
-import {Injectable} from '@nestjs/common';
-import { EventsRepositoyry } from "./events.repository";
+import { Injectable } from '@nestjs/common';
+import { EventsRepositoyry } from './events.repository';
 import { EventInput, EventType } from 'src/models/events.types';
 
 @Injectable()
 export class EventsService {
+  constructor(public eventsRepo: EventsRepositoyry) {}
 
-    constructor(public eventsRepo: EventsRepositoyry) {
-        // console.log('Constructor arguments:', this);
-    }
+  findOne(id: string) {
+    return this.eventsRepo.findOne(id);
+  }
 
-    findOne(id: string) {
-        return this.eventsRepo.findOne(id);
-    }
+  findAll() {
+    return this.eventsRepo.findAll();
+  }
 
-    findAll() {
-        return this.eventsRepo.findAll();
-    }
+  create(content: EventInput) {
+    return this.eventsRepo.create(content);
+  }
 
-    create(content: EventInput) {
-        return this.eventsRepo.create(content);
-    }
+  update(content: Partial<EventType>) {
+    return this.eventsRepo.update(content);
+  }
 
-    update(content: Partial<EventType>) {
-        return this.eventsRepo.update(content);
-    }
+  async remove(id: string) {
+    return await this.eventsRepo.delete(id);
+  }
 
-    async remove(id: string) {
-        return await this.eventsRepo.delete(id);
-    }
-
-    removeAll() {
-        return this.eventsRepo.deleteAll();
-    }
+  removeAll() {
+    return this.eventsRepo.deleteAll();
+  }
 }

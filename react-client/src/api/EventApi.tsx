@@ -17,14 +17,24 @@ class EventApi {
                 throw new Error('Something went wrong!');
             }
             let data = response.data;
-            data = data.map((e: EventType) => {
+            data = data.map((e: {
+                _id: string,
+                title: string,
+                friends: string[],
+                location: string,
+                notes: string | undefined,
+                date: Date
+            }) => {
+                console.log("e:");
+                console.log(e);
                 return {
                     _id: e._id,
-                    eventTitle: e.eventTitle,
+                    title: e.title,
                     friends: e.friends,
                     location: e.location,
                     notes: e.notes,
-                    date: new Date(e.date)
+                    start: new Date(e.date),
+                    end: new Date(e.date)
                 };
             });
             return data;

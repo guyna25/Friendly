@@ -1,69 +1,80 @@
-import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
-import { Document, Model } from "mongoose";
+import { Document, Model } from 'mongoose';
 
 export interface EventInput {
-    eventTitle: string;
-    friends: string[];
-    location: string;
-    date?: Date;
-    notes?: string;
+  title: string;
+  friends: string[];
+  location: string;
+  start: Date;
+  end: Date;
+  wholeDay: boolean;
+  notes?: string;
 }
 
 export class EventType {
-    _id: string;
-    eventTitle: string;
-    friends: string[];
-    location: string;
-    date: Date;
-    notes?: string;
+  _id: string;
+  title: string;
+  friends: string[];
+  location: string;
+  start: Date;
+  end: Date;
+  wholeDay: boolean;
+  notes?: string;
 
-    constructor(values: EventInput) {
-        const {eventTitle, friends: friends, location, date, notes} = values;
-        this.eventTitle = eventTitle;
-        this.friends =friends;
-        this.location = location;
-        this.date = date ?? new Date();
-        this.notes = notes;
-    }
+  constructor(values: EventInput) {
+    const { title, friends, location, start, end, wholeDay, notes } = values;
+    this.title = title;
+    this.friends = friends;
+    this.location = location;
+    this.start = start;
+    this.end = end;
+    this.wholeDay = wholeDay;
+    this.notes = notes;
+  }
 }
 
 export interface EventDocument extends Document<EventType> {
-    eventTitle: string,
-    friends: Array<string>,
-    location: string,
-    date: Date,
-    notes: string,
-};
+  title: string;
+  friends: Array<string>;
+  location: string;
+  start: Date;
+  end: Date;
+  wholeDay: boolean;
+  notes: string;
+}
 export interface EventModel extends Model<EventDocument> {
-    findOneOrCreate: (
-        {
-        eventTitle,
-        friends,
-        location,
-        date,
-        notes
-        }: { 
-            eventTitle: string,
-            friends: Array<string>,
-            location: string,
-            date: Date,
-            notes: string,
-        }
-      ) => Promise<EventDocument>;
+  findOneOrCreate: ({
+    eventTitle,
+    friends,
+    location,
+    start,
+    end,
+    wholeDay,
+    notes,
+  }: {
+    eventTitle: string;
+    friends: Array<string>;
+    location: string;
+    start: Date;
+    end: Date;
+    wholeDay: boolean;
+    notes: string;
+  }) => Promise<EventDocument>;
 
-      insertOne: (
-        {
-        eventTitle,
-        friends,
-        location,
-        date,
-        notes
-        }: { 
-            eventTitle: string,
-            friends: Array<string>,
-            location: string,
-            date: Date,
-            notes: string,
-        }
-      ) => Promise<EventDocument>;
-};
+  insertOne: ({
+    eventTitle,
+    friends,
+    location,
+    start,
+    end,
+    wholeDay,
+    notes,
+  }: {
+    eventTitle: string;
+    friends: Array<string>;
+    location: string;
+    start: Date;
+    end: Date;
+    wholeDay: boolean;
+    notes: string;
+  }) => Promise<EventDocument>;
+}

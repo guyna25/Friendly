@@ -1,8 +1,14 @@
-import { registerDecorator, ValidationOptions, ValidationArguments, isString, isEmpty, isDateString} from 'class-validator';
-import { EventType } from 'src/models/events.types';
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidationArguments,
+  isString,
+  isEmpty,
+  isDateString,
+} from 'class-validator';
 
 export function IsValidEventUpdate(validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return function (object: object, propertyName: string) {
     registerDecorator({
       name: 'isValidEventUpdate',
       target: object.constructor,
@@ -10,37 +16,33 @@ export function IsValidEventUpdate(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          const possible_fields = ["eventTitle", "friends", "location", "date", "notes"];
-          let value_map = JSON.parse(value);
+          const value_map = JSON.parse(value);
           //must have _id
           if (!isString(value_map['_id']) || isEmpty(value_map['_id'])) {
             return false;
-          };
+          }
           let hasUpdatableField = false;
           //validate types for all possible field updates - needs to have at least one valid not id field
           for (const key in value_map) {
             if (key == '_id') {
               continue;
             }
-            if (key == 'eventTitle' || key == 'friends' || key == 'location') {
+            if (key == 'title' || key == 'friends' || key == 'location') {
               if (!isString(value_map[key])) {
                 return false;
               }
               hasUpdatableField = true;
-            }
-            else if (key == 'date') {
+            } else if (key == 'start' || key == 'end') {
               if (!isDateString(value_map[key])) {
                 return false;
               }
               hasUpdatableField = true;
-            }
-            else if (key == 'notes') {
-              if ((!isEmpty(value_map[key]) && isString)) {
+            } else if (key == 'notes') {
+              if (!isEmpty(value_map[key]) && isString) {
                 return false;
               }
               hasUpdatableField = true;
-            }
-            else {
+            } else {
               return false;
             }
           }

@@ -13,11 +13,13 @@ const MONGO_URL = get_full_access_url(
   process.env.CLUSTER_URL,
 );
 
+
 mongoose.connection.once('open', () => {
   console.log('MongoDB connection ready!');
 });
 
 mongoose.connection.on('error', (err) => {
+  console.error('Connection err:');
   console.error(err);
 });
 

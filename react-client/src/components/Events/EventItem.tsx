@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Grid, InputLabel, Stack, TextField, Typography } from '@mui/material';
+import { Card, CardActions, CardContent, CardHeader, Grid, InputLabel, Stack, TextField, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { CARD_TEXT_COLOR, BUTTON_TEXT_COLOR, CARD_BACKGROUND_COLOR, CARD_BORDER_COLOR, CARD_CONTENT_TEXT_COLOR } from '../../theme/Colors';
@@ -10,7 +10,7 @@ import EventApiInstance from '../../api/EventApi';
 import DateDisplay from '../DateDisplay';
 import EventButton from '../EventButton';
 
-const button_style = { color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR }
+// const button_style = { color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR }
 
 const StyledCard = styled(Card)`
   background-color: ${CARD_BACKGROUND_COLOR};
@@ -25,42 +25,45 @@ const StyledCardHeader = styled(CardHeader)`
 
 const EventItem: React.FC<{
   _id: string,
-  eventTitle: string,
+  title: string,
   friends: string[],
   location: string,
   notes: string | undefined,
-  date: Date,
+  start: Date,
+  end: Date,
   deleteHandle: (id: string) => void
 }> = (props) => {
   const [inEdit, setInEdit] = useState(false);
 
   const saveHandler = () => {
-    if ((titleVal !== props.eventTitle) || (friendsVal !== props.friends.join(", ")) || (locationVal !== props.location) || (dateVal !== props.date) || (notesVal !== props.notes)) {
+    if ((titleVal !== props.title) || (friendsVal !== props.friends.join(", ")) || (locationVal !== props.location) || (endVal !== props.end) || (notesVal !== props.notes)) {
       EventApiInstance.updateEvent({
         _id: props._id,
-        ...(titleVal !== props.eventTitle && { eventTitle: titleVal }),
+        ...(titleVal !== props.title && { title: titleVal }),
         ...(friendsVal !== props.friends.join(", ") && { friends: friendsVal.split(",") }),
         ...(locationVal !== props.location && { location: locationVal }),
         ...(notesVal !== props.notes && { notes: notesVal }),
-        ...(dateVal !== props.date && { date: dateVal }),
+        ...(startVal !== props.start && { date: startVal }),
+        ...(startVal !== props.end && { date: startVal }),
       });
     }
 
     setInEdit(false);
   }
 
-  const [titleVal, settitleVal] = useState(props.eventTitle);
+  const [titleVal, settitleVal] = useState(props.title);
   const [friendsVal, setfriendsVal] = useState(props.friends.join(", "));//handle in submission
   const [locationVal, setlocationVal] = useState(props.location);
   const [notesVal, setnotesVal] = useState(props.notes);
-  const [dateVal, setDateVal] = useState(props.date);
+  const [startVal, setStartVal] = useState(props.start);
+  const [endVal, setEndVal] = useState(props.end);
 
   if (inEdit) {
     return (<StyledCard>
       <StyledCardHeader
         title={<Grid container spacing={2} xs={12}>
           <Grid xs={4}>
-            <InputLabel htmlFor="eventTitleField">Title</InputLabel>
+            <InputLabel htmlFor="titleField">Title</InputLabel>
           </Grid>
           <Grid xs={8}>
             <TextField id="standard-basic" variant="standard" type="text" value={titleVal}
@@ -77,9 +80,17 @@ const EventItem: React.FC<{
             <LocalizationProvider dateAdapter={AdapterDateFns}>
 
               <DateTimePicker
-                defaultValue={dateVal}
-                value={dateVal}
-                onChange={(date) => setDateVal(date ?? new Date())}
+                defaultValue={startVal}
+                value={startVal}
+                onChange={(date) => setStartVal(date ?? new Date())}
+                ampm={false}
+                minDate={new Date("2019-01-01")}
+                maxDate={new Date("2100-01-01")}
+              />
+              <DateTimePicker
+                defaultValue={endVal}
+                value={startVal}
+                onChange={(date) => setEndVal(date ?? new Date())}
                 ampm={false}
                 minDate={new Date("2019-01-01")}
                 maxDate={new Date("2100-01-01")}
@@ -124,7 +135,7 @@ const EventItem: React.FC<{
           </Grid>
           <Grid item xs={8}>
             <Typography variant="h5" color={CARD_TEXT_COLOR}>
-              <DateDisplay dateVal={dateVal} />
+              <DateDisplay dateVal={startVal} />
             </Typography>
           </Grid>
         </Grid>

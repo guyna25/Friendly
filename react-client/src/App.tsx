@@ -1,4 +1,4 @@
-import Events from './components/Events/EventsList';
+import Events from './components/Events/EventsView';
 import NewEvent from './components/NewEvent/NewEvent';
 
 import { Box, Grid } from '@mui/material';
@@ -10,7 +10,7 @@ import { EventType, PartialEventType } from './components/Events/EventType';
 import { APP_BACKGROUND_COLOR } from './theme/Colors';
 import theme from './theme/MuiTheme';
 import AppHeader from './components/Header';
-import MyCalendar from './components/Calendar';
+import EventCalendar from './components/Events/EventCalendar';
 
 function App() {
 
@@ -42,11 +42,12 @@ function App() {
     EventApiInstance.createEvent(data).then((newId: string) => {
       const newEvent: EventType = {
         _id: newId,
-        "eventTitle": data.eventTitle,
+        "title": data.title,
         "friends": data.friends,
         "location": data.location,
         "notes": data.notes,
-        "date": data.date
+        "start": data.start,
+        "end": data.end
       }
       console.log('create succesful:', newEvent);
       setEvents([...events, newEvent]);
@@ -72,7 +73,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <AppHeader title='Friendly - meet your friends'></AppHeader>
       <Box>
-        <MyCalendar events={events}/>
+        <EventCalendar events={events}/>
           
       </Box>
       <Box sx={{ backgroundColor: APP_BACKGROUND_COLOR, marginLeft: '10px' }}>

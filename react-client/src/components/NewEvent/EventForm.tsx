@@ -50,10 +50,11 @@ const EventForm: React.FC<{ onSaveEvent: (enteredEventData: PartialEventType) =>
         event.preventDefault();
         if (eventTitleInputRef.current?.value && locationInputRef.current?.value && friendsInputRef.current?.value && dateInput) {
             const eventData: PartialEventType = {
-                eventTitle: eventTitleInputRef.current?.value ?? "",
+                title: eventTitleInputRef.current?.value ?? "",
                 friends: friendsInputRef.current?.value.split(" ") ?? [],
                 location: locationInputRef.current?.value ?? "",
-                date: dateInput,
+                start: dateInput,
+                end: dateInput,
                 notes: notesInputRef.current?.value ?? ""
             };
             props.onSaveEvent(eventData);
