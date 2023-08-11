@@ -23,7 +23,9 @@ class EventApi {
                 friends: string[],
                 location: string,
                 notes: string | undefined,
-                date: Date
+                start: Date,
+                end: Date,
+                wholeDay: boolean,
             }) => {
                 console.log("e:");
                 console.log(e);
@@ -33,8 +35,9 @@ class EventApi {
                     friends: e.friends,
                     location: e.location,
                     notes: e.notes,
-                    start: new Date(e.date),
-                    end: new Date(e.date)
+                    start: new Date(e.start),
+                    end: new Date(e.end),
+                    wholeDay: e.wholeDay,
                 };
             });
             return data;

@@ -1,4 +1,4 @@
-import { Card, CardActions, CardContent, CardHeader, Grid, InputLabel, Stack, TextField, Typography } from '@mui/material';
+import { Card, CardActions, CardContent, CardHeader, Checkbox, FormControlLabel, Grid, InputLabel, Stack, TextField, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { CARD_TEXT_COLOR, BUTTON_TEXT_COLOR, CARD_BACKGROUND_COLOR, CARD_BORDER_COLOR, CARD_CONTENT_TEXT_COLOR } from '../../theme/Colors';
@@ -31,12 +31,13 @@ const EventItem: React.FC<{
   notes: string | undefined,
   start: Date,
   end: Date,
+  wholeDay: boolean | undefined
   deleteHandle: (id: string) => void
 }> = (props) => {
   const [inEdit, setInEdit] = useState(false);
 
   const saveHandler = () => {
-    if ((titleVal !== props.title) || (friendsVal !== props.friends.join(", ")) || (locationVal !== props.location) || (endVal !== props.end) || (notesVal !== props.notes)) {
+    if ((titleVal !== props.title) || (friendsVal !== props.friends.join(", ")) || (locationVal !== props.location) || (startVal !== props.start) || (endVal !== props.end) || (notesVal !== props.notes) || (wholeDayVal !== props.wholeDay)) {
       EventApiInstance.updateEvent({
         _id: props._id,
         ...(titleVal !== props.title && { title: titleVal }),
@@ -44,7 +45,8 @@ const EventItem: React.FC<{
         ...(locationVal !== props.location && { location: locationVal }),
         ...(notesVal !== props.notes && { notes: notesVal }),
         ...(startVal !== props.start && { date: startVal }),
-        ...(startVal !== props.end && { date: startVal }),
+        ...(endVal !== props.end && { date: endVal }),
+        ...(wholeDayVal !== props.wholeDay && { date: wholeDayVal }),
       });
     }
 
@@ -57,6 +59,8 @@ const EventItem: React.FC<{
   const [notesVal, setnotesVal] = useState(props.notes);
   const [startVal, setStartVal] = useState(props.start);
   const [endVal, setEndVal] = useState(props.end);
+  const [wholeDayVal, setwholeDay] = useState(props.wholeDay);
+
 
   if (inEdit) {
     return (<StyledCard>
@@ -89,13 +93,17 @@ const EventItem: React.FC<{
               />
               <DateTimePicker
                 defaultValue={endVal}
-                value={startVal}
+                value={endVal}
                 onChange={(date) => setEndVal(date ?? new Date())}
                 ampm={false}
                 minDate={new Date("2019-01-01")}
                 maxDate={new Date("2100-01-01")}
               />
             </LocalizationProvider>
+            <FormControlLabel
+                        control={<Checkbox checked={wholeDayVal} onChange={(e) => {setwholeDay(e.target.checked)}} />}
+                        label="Whole day"
+                    />
           </Grid>
           <Grid item xs={4}>
             <InputLabel htmlFor="friendsField">Friends</InputLabel>
@@ -118,8 +126,8 @@ const EventItem: React.FC<{
         </Grid>
       </CardContent>
       <CardActions>
-      <EventButton content='Save' onClick={saveHandler}
-      />
+        <EventButton content='Save' onClick={saveHandler}
+        />
       </CardActions>
     </StyledCard>);
   }
@@ -127,22 +135,16 @@ const EventItem: React.FC<{
   return <StyledCard>
     <StyledCardHeader
       title={
-        <Grid container xs={12} spacing={1}>
-          <Grid item xs={4} >
-            <Typography variant="h5" color={CARD_TEXT_COLOR}>
-              {titleVal}
-            </Typography>
-          </Grid>
-          <Grid item xs={8}>
-            <Typography variant="h5" color={CARD_TEXT_COLOR}>
-              <DateDisplay dateVal={startVal} />
-            </Typography>
-          </Grid>
-        </Grid>
+        <Typography variant="h5" color={CARD_TEXT_COLOR}>
+          {titleVal}
+        </Typography>
       }
     />
     <CardContent sx={{ textAlign: 'left' }}>
       <Stack>
+        <Typography variant="body2" color={CARD_CONTENT_TEXT_COLOR}>
+          <DateDisplay startVal={props.start} endVal={props.end} wholeDay={props.wholeDay ?? false} />
+        </Typography>
         <Typography variant="body2" color={CARD_CONTENT_TEXT_COLOR}>
           Friends: {friendsVal}
         </Typography>

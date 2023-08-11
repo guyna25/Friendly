@@ -6,6 +6,7 @@ export interface EventType {
     notes: string | undefined,
     start: Date,
     end: Date
+    wholeDay: boolean
 }
 
 export interface PartialEventType {
@@ -15,4 +16,5 @@ export interface PartialEventType {
     notes: string | undefined,
     start: Date,
     end: Date
+    wholeDay: boolean
 }
