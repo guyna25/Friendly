@@ -27,8 +27,6 @@ class EventApi {
                 end: Date,
                 wholeDay: boolean,
             }) => {
-                console.log("e:");
-                console.log(e);
                 return {
                     _id: e._id,
                     title: e.title,

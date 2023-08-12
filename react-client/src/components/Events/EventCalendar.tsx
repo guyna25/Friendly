@@ -1,8 +1,10 @@
 import moment from 'moment';
-import React from 'react';
+import React, { useState } from 'react';
 import { Calendar, EventProps, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { EventType } from './EventType';
+import { Box, Popover } from '@mui/material';
+import EventItem from './EventItem';
 
 const localizer = momentLocalizer(moment)
 
@@ -14,17 +16,22 @@ interface AdjustedEventType {
     notes: string | undefined,
     start: Date,
     end: Date
+    wholeDay: boolean
 }
 
 //@TODO extend event props
-const customEvent: React.ComponentType<EventProps<AdjustedEventType>> = (eventData: EventProps<AdjustedEventType>) => {
+const customEvent: React.ComponentType<EventProps<EventType>> = (eventData: EventProps<EventType>) => {
     return <>
-        {eventData.event.title}<br/>
-        {eventData.event.notes}
+        <strong> {eventData.event.title} </strong><br />
+        {eventData.event.friends}
     </>
 };
 
-const EventCalendar = (props: { events: EventType[]; }) => {
+const EventCalendar = (props: { events: EventType[]; deleteHandler: (id: string) => void }) => {
+    const [popOverOpen, setPopOverOpen] = useState(false);
+    const [popOverAnchor, setPopOverAnchor] = useState<HTMLElement | null>(null); // Anchor element for Popover
+    const [selectedEvent, setSelectedEvent] = useState<AdjustedEventType | null>(null);
+
     const events = props.events.map((event) => {
         return {
             ...event,
@@ -34,16 +41,58 @@ const EventCalendar = (props: { events: EventType[]; }) => {
         };
     });
 
+    const handleEventSelect = (event: AdjustedEventType, e: React.SyntheticEvent<HTMLElement, Event>): void => {
+        setSelectedEvent(event);
+        setPopOverAnchor(e.currentTarget);
+        setPopOverOpen(true);
+    };
+
+    const handleClosePopover = (): void => {
+        setSelectedEvent(null);
+        setPopOverAnchor(null);
+        setPopOverOpen(false);
+    };
+
     return (
         <>
             <Calendar
                 localizer={localizer}
-                components={{event: customEvent}}
+                components={{ event: customEvent }}
                 events={events}
-                startAccessor="start"
-                endAccessor="end"
                 style={{ height: 500 }}
+                onSelectEvent={handleEventSelect}
             />
+            <Popover
+                open={popOverOpen}
+                anchorEl={popOverAnchor}
+                onClose={handleClosePopover}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                }}
+                transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+            >
+                {selectedEvent && (
+                    <Box >
+                        <EventItem
+                            _id={selectedEvent._id}
+                            title={selectedEvent.title}
+                            friends={selectedEvent.friends}
+                            location={selectedEvent.location}
+                            notes={selectedEvent.notes}
+                            start={selectedEvent.start}
+                            end={selectedEvent.end}
+                            wholeDay={selectedEvent.wholeDay}
+                            deleteHandle={props.deleteHandler}
+                            closePopover={handleClosePopover}
+
+                        />
+                    </Box>
+                )}
+            </Popover>
         </>
     )
 }

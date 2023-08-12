@@ -1,16 +1,15 @@
 import { Card, CardActions, CardContent, CardHeader, Checkbox, FormControlLabel, Grid, InputLabel, Stack, TextField, Typography } from '@mui/material';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { CARD_TEXT_COLOR, BUTTON_TEXT_COLOR, CARD_BACKGROUND_COLOR, CARD_BORDER_COLOR, CARD_CONTENT_TEXT_COLOR } from '../../theme/Colors';
+import { BUTTON_STYLE, CARD_BACKGROUND_COLOR, CARD_BORDER_COLOR, CARD_CONTENT_TEXT_COLOR, CARD_TEXT_COLOR } from '../../theme/Colors';
 
-import React, { useState } from 'react';
+import { Button } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { DateTimePicker } from '@mui/x-date-pickers';
+import React, { useState } from 'react';
 import EventApiInstance from '../../api/EventApi';
 import DateDisplay from '../DateDisplay';
 import EventButton from '../EventButton';
-
-// const button_style = { color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR }
 
 const StyledCard = styled(Card)`
   background-color: ${CARD_BACKGROUND_COLOR};
@@ -33,6 +32,7 @@ const EventItem: React.FC<{
   end: Date,
   wholeDay: boolean | undefined
   deleteHandle: (id: string) => void
+  closePopover?: () => void
 }> = (props) => {
   const [inEdit, setInEdit] = useState(false);
 
@@ -132,12 +132,17 @@ const EventItem: React.FC<{
     </StyledCard>);
   }
 
+  const closeButton = <Button sx={BUTTON_STYLE} onClick={props.closePopover}>Close</Button>
+
   return <StyledCard>
     <StyledCardHeader
       title={
+        <Stack direction='row' justifyContent='space-between' alignItems='center'>
         <Typography variant="h5" color={CARD_TEXT_COLOR}>
           {titleVal}
         </Typography>
+        {props.closePopover && closeButton}
+        </Stack>
       }
     />
     <CardContent sx={{ textAlign: 'left' }}>
@@ -165,6 +170,7 @@ const EventItem: React.FC<{
       <EventButton content='Delete' onClick={() => {
         if (window.confirm("You are about to delete this event")) {
           EventApiInstance.destroyEvent(props._id, () => props.deleteHandle(props._id));
+          props.closePopover && props.closePopover();
         }
       }}
       />

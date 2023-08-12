@@ -10,3 +10,4 @@ export const EVENTITEM_BORDER_COLOR = "#FFDEB4";
 export const EVENTITEM_BACKGROUND_COLOR = "#F9F6DD";
 
 export const HEADER_BACKGROUND_COLOR = "#E7E09B";
+export const BUTTON_STYLE = { color: BUTTON_TEXT_COLOR, borderColor: CARD_TEXT_COLOR, backgroundColor: CARD_BACKGROUND_COLOR };

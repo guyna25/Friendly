@@ -1,15 +1,15 @@
 import Events from './components/Events/EventsView';
 import NewEvent from './components/NewEvent/NewEvent';
 
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Grid, Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import EventApiInstance from './api/EventApi';
 import { EventType, PartialEventType } from './components/Events/EventType';
+import AppHeader from './components/Header';
 import { APP_BACKGROUND_COLOR } from './theme/Colors';
 import theme from './theme/MuiTheme';
-import AppHeader from './components/Header';
 
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
   const [events, setEvents] = useState<EventType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  
+
 
   const deleteHandler = (deletedId: string) => {
     setEvents(events.filter((event) => event._id !== deletedId));
@@ -73,12 +73,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <AppHeader title='Friendly - meet your friends'></AppHeader>
-      <Stack direction={'column'} sx={{ backgroundColor: APP_BACKGROUND_COLOR, marginLeft: '10px' }}> 
-      
-      <NewEvent onAddEvent={addEventHandler} />
-      
-          {content}
-          
+      <Stack direction={'column'} sx={{ backgroundColor: APP_BACKGROUND_COLOR, marginLeft: '10px' }}>
+        <NewEvent onAddEvent={addEventHandler} />
+
+        {content}
+
       </Stack>
     </ThemeProvider>
   );
