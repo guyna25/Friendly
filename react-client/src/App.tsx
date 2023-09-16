@@ -74,6 +74,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <AppHeader title='Friendly - meet your friends'></AppHeader>
       <Stack direction={'column'} sx={{ backgroundColor: APP_BACKGROUND_COLOR, marginLeft: '10px' }}>
+        <a href="/auth/google">Google login</a>
         <NewEvent onAddEvent={addEventHandler} />
 
         {content}

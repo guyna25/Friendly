@@ -8,10 +8,12 @@ import { ValidationPipe } from '@nestjs/common';
 import { EventsModule } from './events/events.module';
 
 import { mongoConnect } from './services/db';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
 await mongoConnect();
-  const app = await NestFactory.create(EventsModule);
+  const app = await NestFactory.create(AppModule);
+  // const app = await NestFactory.create(EventsModule);
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(process.env.PORT).then(() => {
